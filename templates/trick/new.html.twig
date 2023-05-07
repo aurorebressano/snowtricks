@@ -3,9 +3,112 @@
 {% block title %}New Trick{% endblock %}
 
 {% block body %}
-    <h1>Create new Trick</h1>
+    {# <h1>Create new Trick</h1> #}
 
-    {{ include('trick/_form.html.twig') }}
+    {# {{ include('trick/_form.html.twig') }} #}
 
-    <a href="{{ path('app_trick_index') }}">back to list</a>
+    <!-- ////////////////////////// -->
+{{ form_start(form) }}
+<section id="portfolio-details" class="portfolio-details pt-0 mt-5 mb-3">
+  <div class="container mt-5">
+    <div class="row gy-4">
+      <div>
+        <div>
+          <div>
+            <div class="modalImgHeader imgToDisplay" style="opacity:0.85">
+              <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
+                <div class="editDelete d-flex flex-row justify-content-around align-items-center px-2 py-3" style="opacity:1">
+                  <a href="{{ path('app_trick_new', {'id': trick.id}) }}" data-gallery="portfolioGallery" title="App 2"><i class="bi bi-pencil"></i></a>
+                  <a href="{{ path('app_trick_delete', {'id': trick.id}) }}" class="details-link" title="More Details"><i class="bi bi-trash"></i></a>
+                </div>
+              </div>
+              <div class="gridTrickName d-flex align-items-center justify-content-center">
+                <h2 class="trickName">{{ form_widget(form.name) }}</h2>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="d-flex flex-lg-row justify-content-center sticky-bottom bigdisappear" style="display=block">
+    <div>
+      <button id ="loadMoreDetailsBottom" class="buttons mt-4 mb-2" onclick="displayMoreDetailsBottom()" style="position:relative">
+        <i class="bi bi-arrow-clockwise"></i> See medias 
+      </button>
+    </div>
+  </div>
+  <div class="container mt-4 mb-4 miniHideMedias">
+    <div class="row portfolio-container">
+      <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center">
+        <i class="bi bi-caret-left xarrows"></i>
+        <!-- Div de mise en page -->
+      </div>
+
+      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
+        <img src="{{asset('assets/img/portfolio/mute_mini.png')}}" class="img-fluid" alt="">
+      </div>
+
+      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
+        <img src="{{asset('assets/img/portfolio/backsideair_mini.png')}}" class="img-fluid" alt="">
+      </div>
+
+      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
+        <img src="{{asset('assets/img/portfolio/japanair_mini.png')}}" class="img-fluid" alt="">
+      </div>
+
+      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
+        <img src="{{asset('assets/img/portfolio/nosegrab_mini.png')}}" class="img-fluid" alt="">
+      </div>
+
+      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
+        <img src="{{asset('assets/img/portfolio/tailgrab_mini.png')}}" class="img-fluid" alt="">
+      </div>
+
+      <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center">
+        <i class="bi bi-caret-right xarrows"></i>
+      <!-- Div de mise en page -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Portfolio Details Section -->
+<section class="about miniReduce mt-5">
+  <div class=" d-flex flex-row justify-content-center miniModalCrunch">
+      <p><span class="badge bg-secondary mx-2 miniCrush">{{ form_widget(form.category) }}</span></p>
+      {# <p><span class="badge bg-menthe mx-2 miniCrush">Crée: {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
+      <p><span class="badge bg-secondary mx-2 miniCrush">Modif: {{ trick.updateDate ? trick.updateDate|date('Y-m-d H:i:s') : 'non modifié' }}</span></p>
+      <p><span class="badge bg-menthe mx-2 miniCrush">By {{ trick.user }}</span></p> #}
+  </div>
+</section>
+<section class="comment justify-content-center miniModalForm mr-5">
+    <div class="container col-9 ">
+        <div class="row justify-content-center mt-5 mb-5">
+            <div class="form col-9">
+                <div class="d-flex flex-column justify-content-center w-100">
+                    <div class="w-100 mb-2">
+                        <div class="input-group centered">
+                            {{ form_row(form.description) }}
+                        </div>
+                    </div>            
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer border-0 miniModalFooter">
+        <button type="submit" class="btn btn-secondary" formaction="{{ path('app_trick_index') }}">Back to list</button>
+        <button type="submit" class="btn bg-menthe">{{ button_label|default('Save') }}</button>
+    </div>
+    <!-- ======= Footer ======= -->
+    <div id="footer" class="bigdisappear mb-5 mr-5 miniModalRealFooter">
+        <div class="footer-top">
+            <div class="footer-adapt">
+                <a href="index.php"><i class="bi bi-house-fill"></i></a>
+                <a href=""><i class="bi bi-bookmark-fill"></i></a>
+                <a href="forms/contact.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link"><i class="bi bi-box-arrow-in-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- End Footer -->
+</section> 
+{{ form_end(form) }}
 {% endblock %}
+

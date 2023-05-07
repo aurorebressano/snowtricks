@@ -33,7 +33,7 @@ class Trick
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updateDate = null;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Message::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class, orphanRemoval: true)]
@@ -70,7 +70,7 @@ class Trick
     public function setUser(?User $user): self
     {
         $this->user = $user;
-        
+
         return $this;
     }
 

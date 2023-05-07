@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<!-- ======= Forgot password Section ======= -->
+<div class="container miniforms mt-2 mb-1 col-4">
+  <div class="row justify-content-center">
+    <section class="contact">
+      <div class="container mt-4 mb-4 minidisappear">
+        <div class="section-header">
+          <h3 class="section-title">Forgot password</h3>
+        </div>
+      </div>
+      <div class="gx-4 gx-lg-5 d-flex flex-column justify-content-center align-items-center border border-secondary">
+        <div class="form pt-2 pb-2 ">
+          {# <form id="contactForm" action="{{ path('app_forgotpwd') }}" method="post" class="border-0">
+            <div class="container mt-4 mb-4 bigdisappear">
+              <div class="section-header">
+                <h3 class="section-title">Forgot password</h3>
+              </div>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" id="email" type="text" placeholder="Email@email.fr" name="email" required value="{{ last_username }}"/>
+                <label for="email">Email</label>
+                <div class="invalid-feedback" data-sb-feedback="email:required">Email requis</div>
+            </div>
+            <br/>
+            <!-- Submit Button-->
+            <div class="text-center">
+              <button type="submit" class="buttons">
+                Ask for reset password
+              </button>
+            </div>
+          </form> #}
+          {{ form_start(form) }}
+            {{ form_row(form.email)}}
+            {{ form_widget(form.submit)}}
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </section><!-- End Contact Section -->
+  </div>
+</div> 
+{% endblock %}
+{% block footer %}
+<!-- ======= Footer ======= -->
+<footer id="footer" class="mt-5">
+  <div class="footer-top">
+    <div class="footer-adapt">
+        <a href="index.php"><i class="bi bi-house-fill"></i></a>
+        <a href=""><i class="bi bi-bookmark-fill"></i></a>
+        <a href="forms/contact.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link"><i class="bi bi-box-arrow-in-right"></i></a>
+    </div>
+  </div>
+  <div class="container">
+      &copy; Copyright 
+      {{ "now"|date("Y") }}
+  </div>
+</footer><!-- End Footer -->    
+{% endblock %}
