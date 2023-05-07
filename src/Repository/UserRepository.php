@@ -28,7 +28,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $this->getEntityManager()->persist($entity);
 
-        if ($flush){
+        if ($flush) {
             $this->getEntityManager()->flush();
         }
     }
@@ -74,6 +74,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $this->createQueryBuilder('u')
         ->andWhere('u.id = :val')
+        ->setParameter('val', $value)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
+
+    public function findOneByEmail($value): ?User
+    {
+        return $this->createQueryBuilder('u')
+        ->andWhere('u.email = :val')
         ->setParameter('val', $value)
         ->getQuery()
         ->getOneOrNullResult();

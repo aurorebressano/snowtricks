@@ -1,19 +1,136 @@
-<!DOCTYPE html>
+{# <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
+        {# {% block stylesheets %} #}
             {# {{ encore_entry_link_tags('app') }} #}
-        {% endblock %}
+        {# {% endblock %} #}
 
-        {% block javascripts %}
+        {# {% block javascripts %} #}
             {# {{ encore_entry_script_tags('app') }} #}
-        {% endblock %}
+        {# {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
+    </body>
+</html> #}
+
+<!DOCTYPE html>
+<html>
+    <head>  
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+        <!-- Favicons -->
+        <link href="{{asset('assets/img/favicon.png')}}" rel="icon">
+        <link href="{{asset('assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {# {{ encore_entry_link_tags('app') }} #}
+            <!-- Google Fonts -->
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+            <!-- Vendor CSS Files -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+            <link href="{{asset('assets/vendor/aos/aos.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+            <!-- Variables SCSS -->
+            <link href="{{asset('assets/scss/vars.scss')}}" rel="stylesheet">
+
+            <!-- Template Main CSS File -->
+            <link href="{{asset('assets/styles/style.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/styles/ministyle.css')}}" rel="stylesheet">
+            <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        
+        {% endblock %}
+    </head>
+        <body>
+        {% block header %}
+            <!-- ======= Header ======= -->
+            {# <header id="header" class="fixed-top d-flex align-items-center header-transparent minidisappear"> #}
+            <header id="header" class="fixed-top d-flex align-items-center minidisappear">
+                <div class="container d-flex justify-content-between align-items-center">
+                <div id="logo">
+                    <h1><a href="/">Snowtricks</a></h1>
+                </div>
+                <nav id="navbar" class="navbar">
+                    <ul>
+                    <li><a class="nav-link scrollto active" href="/">Home</a></li>
+                    {# <li><a class="nav-link scrollto " href="/">Tricks</a></li> #}
+                    <li><a href="{{ path('app_login') }}" class="nav-link scrollto">Sign in</a></li>
+                    <li><a href="{{ path('app_register') }}" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link">Sign up</a></li>
+                    <li><a class="nav-link scrollto disco" href="{{ path('app_logout') }}" data-toggle="tooltip" data-placement="bottom" title="Déconnexion !"><i class="bi bi-power"></i></a></li>
+                    </ul>
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav><!-- .navbar -->
+                </div>
+            </header><!-- End Header -->
+        {% endblock %}
+        
+
+        {% block body %}
+        {% endblock %}
+        {% if app.request.hasPreviousSession %}
+            <div class="messages">
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        {# Bootstrap alert, see https://getbootstrap.com/docs/3.4/components/#alerts #}
+                        <div class="alert alert-dismissible alert-{{ type }} fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="{{ 'action.close'|trans }}">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                            {{ message|trans }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block javascripts %}
+            {# {{ encore_entry_script_tags('app') }} #}
+            <!-- Vendor JS Files -->
+            <script src="{{asset('assets/vendor/purecounter/purecounter_vanilla.js')}}"></script>
+            <script src="{{asset('assets/vendor/aos/aos.js')}}"></script>
+            <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+            <script src="{{asset('assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
+            <script src="{{asset('assets/vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+            <script src="{{asset('assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
+            <script src="{{asset('assets/vendor/php-email-form/validate.js')}}"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+                
+            <!-- Template Main JS File -->
+            <script src="{{asset('assets/main.js')}}"></script>
+        {% endblock %}
+    <!-- ======= Footer ======= -->
+    
+    {% block footer %}
+    <footer id="footer">
+        <div class="footer-top">
+        <div class="footer-adapt">
+            <a href="index.php"><i class="bi bi-house-fill"></i></a>
+            <a href=""><i class="bi bi-bookmark-fill"></i></a>
+            <a href="forms/contact.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link"><i class="bi bi-box-arrow-in-right"></i></a>
+        </div>
+        </div>
+
+        <div class="container">
+            &copy; Copyright 
+            {# <?= date('Y') ?>  #}
+        </div>
+    </footer><!-- End Footer -->
+    {% endblock %}
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center miniarrows"><i class="bi bi-arrow-up-short"></i></a>
     </body>
 </html>

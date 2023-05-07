@@ -1,4 +1,16 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {# {{ form_label(form.content) }}
+    {{ form_widget(form.content) }}
+    {{ form_errors(form.content) }} #}
+    {# <button class="btn">{{ button_label|default('Save') }}</button> #}
+
+    <div class="d-flex flex-row justify-content-center">
+        <div class="form-group col-7" style="height:100%">
+            {# <input type="text" class="form-control" id="inputPassword2"> #}
+            {{ form_widget(form.content) }} {{ form_errors(form.content) }}
+        </div>
+        <div>
+            <button type="submit" class="custButton btn btn-primary mt-0 mb-0 form-group col-2 d-flex flex-row align-items-center justify-content-center" style="height:100%">{{ button_label|default('Commenter') }}</button>
+        </div>
+    </div> 
 {{ form_end(form) }}
