@@ -4,6 +4,17 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
+const countMedias = document.getElementsByClassName("mediasTotal");
+let arrCount = [];
+
+for(var l in countMedias)
+{
+  arrCount.push(countMedias[l]);
+}
+
+const displayMedias = arrCount.slice(0, 4);
+var displayMediasMove = displayMedias;
+
 (function() {
   "use strict";
 
@@ -156,14 +167,25 @@
         scrollto(window.location.hash)
       }
     }
+
+    // Afficher seulement les 4 premiers medias
+    if(countMedias.length != 0)
+    {
+      for(var k in displayMediasMove)
+      {
+        displayMediasMove[k].classList.remove("mediaCarroussel");
+        displayMediasMove[k].classList.add("mediaDisplay");
+      }
+    }
   });
 
   /**
    * Porfolio isotope and filter
    */
 
-  let cont = document.getElementsByClassName("content");
+  // Afficher seulement les premieres tricks
 
+  let cont = document.getElementsByClassName("content");
   let arrToDisplay = [];
   
   for(var j in cont)
@@ -177,6 +199,7 @@
   {
     arrToDisplay[k].classList.remove("content");
   }
+
 
   window.addEventListener('load', () => {
 
@@ -260,6 +283,7 @@ function display()
 {
   let count = document.getElementsByClassName("content");
   let arrCount = [];
+  let displayTricks = [];
 
   for(var l in count)
   {
@@ -272,12 +296,87 @@ function display()
   }
   else
   {
-    arrToDisplay = arrCount.slice(0, 22);
+    displayTricks = arrCount.slice(0, 22);
 
-    for(var k in arrToDisplay)
+    for(var k in displayTricks)
     {
-      arrToDisplay[k].classList.remove("content");
+      displayTricks[k].classList.remove("content");
     }
+  }
+}
+
+function displayMediasLeft()
+{
+  // let count = document.getElementsByClassName("mediaCarroussel");
+  displayMediasMove = document.getElementsByClassName("mediaDisplay");
+
+  let arrCount = [];
+  let displayMediasL = [];
+
+  for(let l in countMedias)
+  {
+    arrCount.push(countMedias[l]);
+  }
+
+  for(let x in displayMediasMove)
+  {
+    displayMediasL.push(displayMediasMove[x]);
+  }
+
+  let idElemToDisplay = arrCount.indexOf(displayMediasL[0]);
+  console.log(idElemToDisplay);
+
+  if(!idElemToDisplay <= 0)
+  {
+    let elemToDisplay = arrCount[idElemToDisplay - 1];
+    elemToDisplay.classList.add("mediaDisplay");
+    elemToDisplay.classList.remove("mediaCarroussel");
+
+    let elemToHide = displayMediasL[3];
+    elemToHide.classList.add("mediaCarroussel");
+    elemToHide.classList.remove("mediaDisplay");
+  }
+  else
+  {
+    console.log("COUCOU");
+    console.log(idElemToDisplay);
+  }
+}
+
+function displayMediasRight()
+{
+  displayMediasMove = document.getElementsByClassName("mediaDisplay");
+
+  let arrCount = [];
+  let displayMediasR = [];
+
+  for(let l in countMedias)
+  {
+    arrCount.push(countMedias[l]);
+  }
+  for(let x in displayMediasMove)
+  {
+    displayMediasR.push(displayMediasMove[x]);
+  }
+
+  // let idElemToDisplay = arrCount.indexOf(displayMediasR[displayMediasR.length -1]);
+  let idElemToDisplay = arrCount.indexOf(displayMediasR[3]);
+  console.log(idElemToDisplay);
+
+  if(idElemToDisplay != arrCount.length -1)
+  {
+    let elemToDisplay = arrCount[idElemToDisplay + 1];
+    elemToDisplay.classList.add("mediaDisplay");
+    elemToDisplay.classList.remove("mediaCarroussel");
+
+    let elemToHide = displayMediasR[0];
+    elemToHide.classList.add("mediaCarroussel");
+    elemToHide.classList.remove("mediaDisplay");
+  }
+  else
+  {
+    console.log("COUCOU");
+    console.log(idElemToDisplay);
   }
 }
 
@@ -306,18 +405,28 @@ function displayMoreDetailsBottom()
   }
 }
 
-function deleteConfirm()
+function deleteConfirm(id)
 {
     var confirmation = window.confirm('Etes-vous sûr de vouloir supprimer cette figure ?') ;
-    if(confirmation === true)
+    if(confirmation == true)
     {
-      const queryString = window.location.search;
-      console.log(queryString);
-      const urlParams = new URLSearchParams(queryString);
-      location.replace("/figure/delete/"+ urlParams.get('id'));
+       //window.location.href = "figure/delete/" + $id;
+       const queryString = window.location.search;
+       console.log(queryString);
+       const urlParams = new URLSearchParams(queryString);
+       location.replace("/figure/delete/"+ id);
     }
 }
 
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+function toggleMediasEdition()
+{
+   var sectionToAppear = document.querySelector('.anchorEditVisibility');
+   sectionToAppear.classList.remove("editMedias");
+
+   var sectionToHide = document.querySelector('.addMedia');
+   sectionToHide.classList.add("editMedias");
+}
+
+// $(function () {
+//   $('[data-toggle="tooltip"]').tooltip()
+// })

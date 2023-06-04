@@ -1,117 +1,97 @@
-{# {% extends 'base.html.twig' %}
-
-{% block title %}Trick{% endblock %}
-
-{% block body %}
-    <h1>Trick</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Creator</th>
-                <td>{{ trick.user }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ trick.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ trick.description }}</td>
-            </tr>
-            <tr>
-                <th>CreationDate</th>
-                <td>{{ trick.creationDate ? trick.creationDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdateDate</th>
-                <td>{{ trick.updateDate ? trick.updateDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_trick_index') }}">back to list</a>
-
-    <a href="{{ path('app_trick_edit', {'id': trick.id}) }}">edit</a> 
-{% endblock %}#}
-
 {% extends 'base.html.twig' %}
     {% block body %}
-
-
-    {# <div>
-        <div class="d-flex flex-column align-items-center miniMargPady" >
-            <div class="modal-content rounded-0" style="width:1000px">
-            <div class="modal-body miniMargPady"> #}
-                <!-- ////////////////////////// -->
-                <section id="portfolio-details" class="portfolio-details pt-0 mt-5 mb-0">
-                <div class="container mt-5">
-                    <div class="row gy-4">
+        <section id="portfolio-details" class="portfolio-details pt-0 mt-5 mb-0">
+            <div class="container mt-5">
+                <div class="row gy-4">
                     <div>
-                        <div>
-                        <div>
-                            <div class="modalImgHeader" style="opacity:0.85">
-                            <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
-                                <div class="editDelete d-flex flex-row justify-content-around align-items-center px-2 py-3" style="opacity:1">
-                                <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" data-gallery="portfolioGallery" title="App 2"><i class="bi bi-pencil"></i></a>
-                                <a href="{{ path('app_trick_delete', {'id': trick.id}) }}" class="details-link" title="More Details"><i class="bi bi-trash"></i></a>
+                        <div>  
+                        {% set headerpic = [] %}
+                        {% for picture in trick.pictures %}
+                            {% if picture.header == true %}
+                                {% set headerpic = headerpic|merge([picture]) %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if headerpic[0] is defined and headerpic[0] is not null %}
+                            {% set header = headerpic[0].path %}
+                        {% else %}
+                            {% set header = 'default.png' %}
+                        {% endif %}
+                            <div class="modalImgHeader" style="opacity:0.85; background: center/100% 100% no-repeat url('../img/{{header}}')">
+                                <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
+                                    <div class="editDelete d-flex flex-row justify-content-around align-items-center px-2 py-3" style="opacity:1">
+                                    <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" data-gallery="portfolioGallery" title="App 2"><i class="bi bi-pencil"></i></a>
+                                    <a href="{{ path('app_trick_delete', {'id': trick.id}) }}" class="details-link" title="More Details"><i class="bi bi-trash"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="gridTrickName d-flex align-items-center justify-content-center">
-                                <h2 class="trickName">{{ trick.name }} </h2>
-                            </div>
+                                <div class="gridTrickName d-flex align-items-center justify-content-center">
+                                    <h2 class="trickName">{{ trick.name }} </h2>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex flex-lg-row justify-content-center sticky-bottom bigdisappear" style="display=block">
-                    <div>
+            </div>
+            <div class="d-flex flex-lg-row justify-content-center sticky-bottom bigdisappear" style="display=block">
+                <div>
                     <button id ="loadMoreDetailsBottom" class="buttons mt-4 mb-2" onclick="displayMoreDetailsBottom()" style="position:relative">
                         <i class="bi bi-arrow-clockwise"></i> See medias 
                     </button>
-                    </div>
                 </div>
-                <div class="container mt-4 mb-4 miniHideMedias">
-                    <div class="row portfolio-container">
-                    <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center">
-                        <i class="bi bi-caret-left xarrows"></i>
+            </div>
+            <div class="container mt-4 mb-4 miniHideMedias">
+                <div class="row portfolio-container">
+                    <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center arrowLeft">
+                        <i class="bi bi-caret-left xarrows arrowLeft" onclick="displayMediasLeft()"></i>
                         <!-- Div de mise en page -->
                     </div>
-
-                    {% for picture in trick.pictures %}
-                        <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
-                            <img src="{{ asset("assets/img/portfolio/" ~ picture ) }}" class="img-fluid" alt="">
+                    {% set medias = [] %}
+                    {% for picture in trick.getPictures() %}
+                        {% set medias = medias|merge([picture]) %}
+                    {% endfor %}
+                    {% for video in trick.videos %}
+                        {% set medias = medias|merge([video]) %}
+                    {% endfor %}
+                    
+                    {% for media in medias %}
+                        <div class="detailsToShow col-lg-2 portfolio-item filter-card card mediasTotal mediaCarroussel">
+                            {% if media is instanceof('App\\Entity\\Picture') %}
+                            <img src="{{ asset('img/' ~ media.path ) }}" class="img-fluid" alt="">
+                            {% endif %}
+                            {% if media is instanceof('App\\Entity\\Video') %}
+                            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ media.videoId }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+                            </iframe>
+                            {% endif %}
                         </div>
                     {% else %}
                         <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
                             <p class="img-fluid">Ajouter un ou plusieurs médias à votre figure.</p>
                         </div>
                     {% endfor %}
-
-                    <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center">
-                        <i class="bi bi-caret-right xarrows"></i>
-                    <!-- Div de mise en page -->
-                    </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="portfolio-info centered">
-                    <div class="portfolio-description miniModalCrunch">
-                        {{ trick.description }}
-                    </div>
+                        <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center arrowRight">
+                            <i class="bi bi-caret-right xarrows arrowRight" onclick="displayMediasRight()"></i>
+                        <!-- Div de mise en page -->
+                        </div>
                     </div>
                 </div>
-                </section>
-                <!-- End Portfolio Details Section -->
-            <section class="about miniReduce">
+            </div>
+            <div class="row">
+                <div class="portfolio-info centered">
+                <div class="portfolio-description miniModalCrunch">
+                    {{ trick.description }}
+                </div>
+                </div>
+            </div>
+            </section>
+        <!-- End Portfolio Details Section -->
+        <section class="about miniReduce">
             <div class=" d-flex flex-row justify-content-center miniModalCrunch">
                 <p><span class="badge bg-secondary mx-2 miniCrush">{{ trick.category }} </span></p>
                 <p><span class="badge bg-menthe mx-2 miniCrush">Crée: {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
                 <p><span class="badge bg-secondary mx-2 miniCrush">Modif: {{ trick.updateDate ? trick.updateDate|date('Y-m-d H:i:s') : 'non modifié' }}</span></p>
                 <p><span class="badge bg-menthe mx-2 miniCrush">By {{ trick.user }}</span></p>
             </div>
-            </section>
-            <section class="comment justify-content-center minidisappear">
+        </section>
+        <section class="comment justify-content-center minidisappear">
             <div class="container col-9 border-top border-bottom border-secondary">
                 <div class="row justify-content-center mt-5 mb-5">
                 <div class="form col-9">
@@ -119,12 +99,11 @@
                 </div>
                 </div>
             </div>
-            </section>
-            <section id="about" class="pb-0 mb-0">
+        </section>
+        <section id="about" class="pb-0 mb-0">
             <div class="container">
                 <div class="about-container d-flex justify-content-center miniModalCrunch">
                     <div class="col-lg-9">
-
                         {% for message in trick.messages %}
                         <div class="icon-box">
                             <div class="icon"><i class="bi bi-briefcase"></i></div>
@@ -132,7 +111,6 @@
                             <p class="description">{{ message.content }}</p>
                         </div>
                         {% endfor %}
-
                     </div>
                 </div>
             </div>
@@ -146,10 +124,6 @@
                 </div>
                 </div>
             </footer><!-- End Footer -->
-            </section>
-            {# </div>
-            </div>
-        </div>
-    </div> #}
+        </section>
     {% endblock %}
 

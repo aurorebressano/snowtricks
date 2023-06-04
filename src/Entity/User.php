@@ -68,6 +68,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'publisher', targetEntity: Video::class, orphanRemoval: true)]
     private Collection $videos;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Avatar::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private ?Avatar $avatar = null;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
@@ -232,7 +235,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->tricks->contains($trick)) {
             $this->tricks->add($trick);
-            $trick->setUserId($this);
+            $trick->setUser($this);
         }
 
         return $this;
@@ -242,8 +245,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->tricks->removeElement($trick)) {
             // set the owning side to null (unless already changed)
-            if ($trick->getUserId() === $this) {
-                $trick->setUserId(null);
+            if ($trick->getUser() === $this) {
+                $trick->setUser(null);
             }
         }
 
@@ -341,5 +344,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->getName() . " " . $this->getFirstName();
+    }
+
+    public function getAvatar(): ?Avatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Avatar $avatar): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($avatar === null && $this->avatar !== null) {
+            $this->avatar->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($avatar !== null && $avatar->getUser() !== $this) {
+            $avatar->setUser($this);
+        }
+
+        $this->avatar = $avatar;
+
+        return $this;
     }
 }

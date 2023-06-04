@@ -77,32 +77,42 @@
   </section><!-- End Hero Section -->
 
   <main id="main">
-
     <!-- ======= Portfolio Section ======= -->
     <section id="portfolio" class="portfolio">
+      <div>
+        <a href="{{ path('app_trick_new') }}" style="color:white">
+          <button class="buttons mt-0 mb-4" style="width:70%;height:50px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="currentColor" class="bi bi-plus-lg img-fluid" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+            </svg>
+            Create new
+          </button>
+        </a>
+      </div>
         <div class="container aos-init aos-animate content" data-aos="fade-up">
 
         {% for trick in tricks %}
-
             {% if loop.index0 is divisible by(5) or loop.first %}
             <div class="row portfolio-container aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
                 <div class="col-lg-1 portfolio-item filter-card content">
                     <!-- Div de mise en page -->
                 </div>
             {% endif %}
-                
+            {% set pic = trick.getPictures().first() %}
                 <div class="col-lg-2 portfolio-item filter-card content card">
-                    {# {{ trick.pictures[0] }} #}
-                    <img src="{{asset('assets/img/portfolio/mute_mini.png')}}" class="img-fluid" alt="">
-                    <div class="portfolio-info card-body">
-                        <h4><a href="{{ path('app_trick_show', {'slug': trick.slug}) }}" class="preview-link">{{ trick.name }}</a></h4>
-                        <div>
-                            <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" class="preview-link" ><i class="bi bi-pencil"></i></a>
-                            <a href="#" class="details-link" title="More Details" onclick="deleteConfirm()"><i class="bi bi-trash"></i></a>
-                        </div>
-                    </div>
+                {% if pic is defined and pic is not null and pic is not empty%}
+                  <img src="{{asset('img/' ~ pic )}}" class="img-fluid" alt="" height="100%">
+                {% else %}
+                  <img src="{{asset('img/default.png')}}" class="img-fluid" alt="" style="height:100%;">
+                {% endif %}
+                  <div class="portfolio-info card-body">
+                      <h4><a href="{{ path('app_trick_show', {'slug': trick.slug}) }}" class="preview-link">{{ trick.name }}</a></h4>
+                      <div>
+                          <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" class="preview-link" ><i class="bi bi-pencil"></i></a>
+                          <button class="details-link" title="More Details" onclick="deleteConfirm({{trick.id}})"><i class="bi bi-trash"></i></button>
+                      </div>
+                  </div>
                 </div>
-
             {% if loop.index is divisible by(5) or loop.last %}
                 <div class="col-lg-1 portfolio-item filter-card content">
                     <!-- Div de mise en page -->
@@ -118,57 +128,7 @@
         <button id = "loadMore" class="buttons mt-4 mb-2" onclick="display()" style="position:relative"><i class="bi bi-arrow-clockwise"></i> Load More </button>
       </div>
     </div>
-  <!-- ======= Connexion Section ======= -->
-    <section id="connexionModal" class="contact modal fade" tabindex="-1" role="dialog" aria-labelledby="connexionModalLabel" aria-hidden="true">
-      <div class="container">
-        <div class="section-header">
-          <h3 class="section-title">Connexion</h3>
-        </div>
-      </div>
-      <div class="col-lg-5 col-md-8">
-        <div class="form">
-          <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-            <div class="form-group">
-              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-            </div>
-            <div class="form-group mt-3">
-              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-            </div>
-            <div class="form-group mt-3">
-              <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-            </div>
-            <div class="form-group mt-3">
-              <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-            </div>
-            <div class="my-3">
-              <div class="loading">Loading</div>
-              <div class="error-message"></div>
-              <div class="sent-message">Your message has been sent. Thank you!</div>
-            </div>
-            <div class="text-center"><button type="submit">Send Message</button></div>
-          </form>
-        </div>
-      </div>
-  </section><!-- End Contact Section -->
-</main><!-- End #main -->
-<a href="{{ path('app_trick_new') }}">Create new</a>
-  <!-- ======= Footer ======= -->
-  {# <footer id="footer">
-    <div class="footer-top">
-      <div class="footer-adapt">
-        <a href="index.php"><i class="bi bi-house-fill"></i></a>
-        <a href=""><i class="bi bi-bookmark-fill"></i></a>
-        <a href="forms/contact.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link"><i class="bi bi-box-arrow-in-right"></i></a>
-      </div>
-    </div>
-
-    <div class="container">
-        &copy; Copyright 
-        {# <?= date('Y') ?>  #}
-    {# </div>
-  </footer> #}
-  <!-- End Footer -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center miniarrows"><i class="bi bi-arrow-up-short"></i></a>
+</main>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center miniarrows"><i class="bi bi-arrow-up-short"></i></a>
  
 {% endblock %}

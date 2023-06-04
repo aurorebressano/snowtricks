@@ -12,6 +12,8 @@ use App\Repository\TrickRepository;
 use App\Repository\MessageRepository;
 use App\Repository\PictureRepository;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +33,7 @@ class TrickController extends AbstractController
 
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function new(Request $request, TrickRepository $trickRepository, UserRepository $UserRepository): Response
+    public function new(Request $request, TrickRepository $trickRepository, UserRepository $UserRepository, FileUploader $fileUploader): Response
     {
         $trick = new Trick();
         $form = $this->createForm(
@@ -40,15 +42,26 @@ class TrickController extends AbstractController
             ['validation_groups' => ['pictures', 'description']]
         );
         $form->handleRequest($request);
+        // dd($request);
 
         if ($form->isSubmitted() && $form->isValid()) 
         {
+            // dd($request);
             // Version test
             $user = $UserRepository->findOneById(1);
+            foreach($trick->getPictures() as $picture)
+            {
+                $picture->setPublisher($user);
+            }
+            foreach($trick->getVideos() as $video)
+            {
+                $video->setPublisher($user);
+            }
             $trick->setUser($user);
             $slugger = new AsciiSlugger();
             $trick->setSlug(strToLower($slugger->slug($trick->getName())));
-
+            $fileUploader->uploadPicture($trick);
+            $fileUploader->uploadVideo($trick);
             //$trick->setUserId($this->getUser());
             //$slugger = new AsciiSlugger();
             //$trick->setSlug(strToLower($slugger->slug($trick->getName())));
@@ -71,6 +84,7 @@ class TrickController extends AbstractController
         MessageRepository $messageRepository,
         UserRepository $userRepository
     ): Response {
+        // dd($request);
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
@@ -121,14 +135,14 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/figure/delete/{id}', name: 'app_trick_delete', methods: ['POST'])]
+    #[Route('/figure/delete/{id}', name: 'app_trick_delete', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function delete(Request $request, Trick $trick, TrickRepository $trickRepository): Response
     {
-        $this->addFlash(
-            'warning',
-            'Are you sure to want delete this trick ?'
-        );
+        // $this->addFlash(
+        //     'warning',
+        //     'Are you sure to want delete this trick ?'
+        // );
         if ($this->isCsrfTokenValid('delete'.$trick->getId(), $request->request->get('_token'))) {
             $trickRepository->remove($trick, true);
             $this->addFlash(

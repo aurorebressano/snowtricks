@@ -24,6 +24,9 @@ class Video
     #[ORM\JoinColumn(nullable: false)]
     private ?user $publisher = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $videoId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,4 +67,21 @@ class Video
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getPath();
+    }
+
+    public function getVideoId(): ?string
+    {
+        return $this->videoId;
+    }
+
+    public function setVideoId(string $videoId): self
+    {
+        $this->videoId = $videoId;
+
+        return $this;
+    } 
 }
