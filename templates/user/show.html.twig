@@ -89,7 +89,11 @@
                 </div>
                 <div class="col-lg-6 content order-lg-1 order-2">
                     <div class="icon-box">
-                    <img src="{{asset('img/' ~ user.avatar )}}" height="100px">
+                        {% if user.picture is defined and user.picture is not empty %}
+                            <img src="{{asset('img/' ~ user.picture )}}" height="100px">
+                        {% else %}
+                            <img src="{{asset('img/default.png')}}" height="100px">
+                        {% endif %}
                     </div>
                     <div class="icon-box">
                     <div class="icon"><i class="bi bi-card-checklist"></i></div>

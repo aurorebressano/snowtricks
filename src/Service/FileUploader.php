@@ -47,16 +47,10 @@ class FileUploader{
 
     public function uploadPersonnalPicture(User $user, $form)
     {
-        dd($form->get('avatar'));
-        $avatar = new Avatar();
-        $avatar->setFile($form->get(''));
-        $user->setAvatar($avatar);
-        if($avatar->getFile() !== null)
+        if($user->getFile() !== null)
         {
-            $avatar->setPath($this->upload($avatar->getFile()));
+            $user->setPicture($this->upload($user->getFile()));
         }
-        
-        // $user->setAvatar($this->upload($avatar->getFile()));
     }
 
     public function uploadVideo(Trick $trick)

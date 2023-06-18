@@ -21,14 +21,12 @@ class UserType extends AbstractType
             ->add('firstname')
             // ->add('registrationDate')
             // ->add('token')
-            ->add('avatar', FileType::class, [
+            ->add('file', FileType::class, [
                 'attr'=>[
                     'label'=> 'Avatar: ', 
                     'placeholder'=>'Add one avatar to your profile'
                 ],
-                'by_reference' => false,
                 'required'=>false,
-                'mapped'=>false
             ])
         ;
     }

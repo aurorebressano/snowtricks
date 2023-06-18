@@ -51,7 +51,11 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_PUBLISHER')]
     public function show(User $user): Response
     {
-        $user = $this->getUser();
+        //$currentUser = $this->getUser();
+        // if ($user !== $currentUser && !$this->isGranted('ROLE_ADMIN')) {
+        //     throw $this->createAccessDeniedException();
+        // }
+        $this->denyAccessUnlessGranted('view', $user);
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -61,9 +65,13 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_PUBLISHER')]
     public function edit(Request $request, User $user, UserRepository $userRepository, FileUploader $fileUploader): Response
     {
+        // $currentUser = $this->getUser();
+        // if ($user !== $currentUser && !$this->isGranted('ROLE_ADMIN')) {
+        //     throw $this->createAccessDeniedException();
+        // }
+        $this->denyAccessUnlessGranted('edit', $user);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request); 
-        
         
         // dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -87,6 +95,11 @@ class UserController extends AbstractController
     #[IsGranted('publisher')]
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
+        // $currentUser = $this->getUser();
+        // if ($user !== $currentUser && !$this->isGranted('ROLE_ADMIN')) {
+        //     throw $this->createAccessDeniedException();
+        // }
+        $this->denyAccessUnlessGranted('delete', $user);
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $userRepository->remove($user, true);
         }

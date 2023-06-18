@@ -5,6 +5,11 @@
                 <div class="row gy-4">
                     <div>
                         <div>  
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
                         {% set headerpic = [] %}
                         {% for picture in trick.pictures %}
                             {% if picture.header == true %}
@@ -19,8 +24,10 @@
                             <div class="modalImgHeader" style="opacity:0.85; background: center/100% 100% no-repeat url('../img/{{header}}')">
                                 <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
                                     <div class="editDelete d-flex flex-row justify-content-around align-items-center px-2 py-3" style="opacity:1">
-                                    <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" data-gallery="portfolioGallery" title="App 2"><i class="bi bi-pencil"></i></a>
-                                    <a href="{{ path('app_trick_delete', {'id': trick.id}) }}" class="details-link" title="More Details"><i class="bi bi-trash"></i></a>
+                                        <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" data-gallery="portfolioGallery" title="App 2"><i class="bi bi-pencil"></i></a>
+                                        <div class="details-link" title="More Details">
+                                            {{ include('trick/_delete_form.html.twig') }}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="gridTrickName d-flex align-items-center justify-content-center">

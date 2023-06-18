@@ -1951,6 +1951,11 @@ textarea.form-control-lg {
   margin-top: 25px;
 }
 
+.error_name ul li
+{
+  color:red;
+}
+
 .contact .php-email-form .sent-message {
   display: none;
   color: #fff;

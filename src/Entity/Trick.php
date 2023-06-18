@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[UniqueEntity(fields:['name'], message:'Le nom de la figure est déjà utilisé')]
 class Trick
 {
     #[ORM\Id]
@@ -21,7 +23,9 @@ class Trick
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner ce champ')]
+    #[Assert\Length(min:2, minMessage: 'Le nom de la figure doit contenir au moins {{ limit }} caractères')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]

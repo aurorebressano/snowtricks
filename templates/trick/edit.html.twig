@@ -70,14 +70,13 @@
       {% for video in form.videos %}
         {% set medias = medias|merge([video]) %}
       {% endfor %}
-      
       {% for media in medias %}
         <div class="detailsToShow col-lg-2 portfolio-item filter-card card mediasTotal mediaCarroussel">
           {# {% include 'picture/_form.html.twig' with {form: picture} %} #}
-        {% if media is instanceof('App\\Entity\\Picture') %}
+        {% if media.vars.value is instanceof('App\\Entity\\Picture') %}
           <img src="{{ asset('img/' ~ media.vars.value.path ) }}" class="img-fluid" alt="">
         {% endif %}
-        {% if media is instanceof('App\\Entity\\Video') %}
+        {% if media.vars.value is instanceof('App\\Entity\\Video') %}
           <iframe width="100%" height="100%" src="{{ media.vars.value.path }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
           </iframe>
         {% endif %}
@@ -95,7 +94,7 @@
             <p class="img-fluid">Ajouter un ou plusieurs médias à votre figure.</p>
           </div>
       {% endfor %}
-      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
+      <div class="detailsToShow col-lg-3 portfolio-item filter-card card">
         <div class="centered addMedia" style="height:100%">
           <a class="preview-link centered">
             {# <svg xmlns="http://www.w3.org/2000/svg" width="30%" height="30%" fill="currentColor" class="bi bi-plus-lg img-fluid" viewBox="0 0 16 16">
@@ -112,7 +111,7 @@
           </a>
         </div>
       </div>
-      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
+      <div class="detailsToShow col-lg-3 portfolio-item filter-card card">
         <div class="centered addMedia" style="height:100%">
           <a class="preview-link centered">
           

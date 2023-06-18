@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\Count as ConstraintsCount;
 
 class TrickType extends AbstractType
 {
@@ -44,7 +45,10 @@ class TrickType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'required'=>true
+                'required'=>true,
+                'constraints' => [
+                    new ConstraintsCount(min:1, minMessage:'Ajoutez au moins une image')
+                ]
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => VideoType::class,
@@ -55,7 +59,10 @@ class TrickType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'required'=>true
+                'required'=>true,
+                'constraints' => [
+                    new ConstraintsCount(min:1, minMessage:'Ajoutez au moins une vidéo')
+                ]
             ]);
             // ->add('media', CollectionType::class, [
             //     // instead of being set onto the object directly,
