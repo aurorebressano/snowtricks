@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class PictureType extends AbstractType
 {
@@ -17,6 +18,13 @@ class PictureType extends AbstractType
             ->add('file', FileType::class, [
                 "required"=>false,
                 "label" => false,
+                'error_bubbling' => true,
+                "constraints" => [
+                    new NotNull(message: "L'image ne doit pas être vide" ,
+                    groups: [
+                        "new"
+                    ])
+                ],
                 "attr"=> [
                     "class" => "pictureFile"
                 ]
@@ -34,6 +42,7 @@ class PictureType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Picture::class,
+            'validation_groups' => []
         ]);
     }
 }

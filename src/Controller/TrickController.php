@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,15 +39,13 @@ class TrickController extends AbstractController
         $trick = new Trick();
         $form = $this->createForm(
             TrickType::class,
-            $trick
+            $trick,
+            ["validation_groups" => "new"]
         );
         $form->handleRequest($request);
-        // dd($request);
 
         if ($form->isSubmitted() && $form->isValid()) 
         {
-            // dd($request);
-            // Version test
             $user = $this->getUser();
             foreach($trick->getPictures() as $picture)
             {
@@ -61,9 +60,6 @@ class TrickController extends AbstractController
             $trick->setSlug(strToLower($slugger->slug($trick->getName())));
             $fileUploader->uploadPicture($trick);
             $fileUploader->uploadVideo($trick);
-            //$trick->setUserId($this->getUser());
-            //$slugger = new AsciiSlugger();
-            //$trick->setSlug(strToLower($slugger->slug($trick->getName())));
 
             $trickRepository->save($trick, true);
             $this->addFlash('success', 'Nouvelle figure ' .$trick->getName(). ' créée !');
@@ -116,15 +112,20 @@ class TrickController extends AbstractController
         FileUploader $fileUploader
     ): Response
     {
-
+        // dump($trick->getPictures());
+        foreach($trick->getPictures() as $picture)
+        {
+            $picture->setFile(new File($this->getParameter("picture_directory")."/".$picture->getPath()));
+        }
+        // dd($trick->getPictures());
         $currentUser = $this->getUser();
-        // if ($trick->getUser() !== $currentUser && !$this->isGranted('ROLE_ADMIN')) {
-        //     throw $this->createAccessDeniedException();
-        // }
-        $this->denyAccessUnlessGranted('edit', $trick);
-        $form = $this->createForm(TrickType::class, $trick);
+        $this->denyAccessUnlessGranted('edit', $trick, "Vous n'avez pas l'autorisation de modifier cette figure");
+        $form = $this->createForm(
+            TrickType::class, 
+            $trick,
+            ["validation_groups" => "edit"]
+        );
         $form->handleRequest($request);
-        // dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
 
             $user = $this->getUser();
@@ -159,7 +160,7 @@ class TrickController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function delete(Request $request, Trick $trick, TrickRepository $trickRepository): Response
     {
-        $this->denyAccessUnlessGranted('delete', $trick);
+        $this->denyAccessUnlessGranted('delete', $trick, "Vous n'avez pas l'autorisation de supprimer cette figure");
         $currentUser = $this->getUser();
         if ($trick->getUser() !== $currentUser && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

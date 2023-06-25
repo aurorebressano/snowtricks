@@ -24,8 +24,10 @@
                             <div class="modalImgHeader" style="opacity:0.85; background: center/100% 100% no-repeat url('../img/{{header}}')">
                                 <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
                                     <div class="editDelete d-flex flex-row justify-content-around align-items-center px-2 py-3" style="opacity:1">
-                                        <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" data-gallery="portfolioGallery" title="App 2"><i class="bi bi-pencil"></i></a>
-                                        <div class="details-link" title="More Details">
+                                        <div class="details-link" title="Edit">
+                                            <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" data-gallery="portfolioGallery" title="Edit" style="margin-left:10px"><i class="bi bi-pencil"></i></a>
+                                        </div>
+                                        <div class="details-link p-0 m-0" title="Delete">
                                             {{ include('trick/_delete_form.html.twig') }}
                                         </div>
                                     </div>
@@ -91,7 +93,7 @@
             </section>
         <!-- End Portfolio Details Section -->
         <section class="about miniReduce">
-            <div class=" d-flex flex-row justify-content-center miniModalCrunch">
+            <div class="d-flex bigRowMiniCol justify-content-center miniModalCrunch centered">
                 <p><span class="badge bg-secondary mx-2 miniCrush">{{ trick.category }} </span></p>
                 <p><span class="badge bg-menthe mx-2 miniCrush">Crée: {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
                 <p><span class="badge bg-secondary mx-2 miniCrush">Modif: {{ trick.updateDate ? trick.updateDate|date('Y-m-d H:i:s') : 'non modifié' }}</span></p>
@@ -121,16 +123,6 @@
                     </div>
                 </div>
             </div>
-            <!-- ======= Footer ======= -->
-            <footer id="footer" class="bigdisappear mb-0 miniModalCrunch">
-                <div class="footer-top">
-                <div class="footer-adapt">
-                    <a href="index.php"><i class="bi bi-house-fill"></i></a>
-                    <a href=""><i class="bi bi-bookmark-fill"></i></a>
-                    <a href="forms/contact.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link"><i class="bi bi-box-arrow-in-right"></i></a>
-                </div>
-                </div>
-            </footer><!-- End Footer -->
         </section>
     {% endblock %}
 

@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\Count as ConstraintsCount;
+use Symfony\Component\Validator\Constraints\Count;
 
 class TrickType extends AbstractType
 {
@@ -47,7 +47,7 @@ class TrickType extends AbstractType
                 'by_reference' => false,
                 'required'=>true,
                 'constraints' => [
-                    new ConstraintsCount(min:1, minMessage:'Ajoutez au moins une image')
+                    new Count(min:1, minMessage:'Ajoutez au moins une image', groups: ["new", "edit"])
                 ]
             ])
             ->add('videos', CollectionType::class, [
@@ -61,20 +61,16 @@ class TrickType extends AbstractType
                 'by_reference' => false,
                 'required'=>true,
                 'constraints' => [
-                    new ConstraintsCount(min:1, minMessage:'Ajoutez au moins une vidéo')
+                    new Count(min:1, minMessage:'Ajoutez au moins une vidéo', groups: ["new", "edit"])
                 ]
             ]);
-            // ->add('media', CollectionType::class, [
-            //     // instead of being set onto the object directly,
-            //     // this is read and encoded in the controller
-            //     'mapped' => false
-            // ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Trick::class,
+            "validation_groups" => []
         ]);
     }
 }

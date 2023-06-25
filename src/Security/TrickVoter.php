@@ -24,7 +24,7 @@ class TrickVoter extends Voter
     protected function supports(string $attribute, mixed $subject): bool
     {
         // if the attribute isn't one we support, return false
-        if (!in_array($attribute, [self::VIEW, self::EDIT])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
             return false;
         }
 
@@ -52,7 +52,7 @@ class TrickVoter extends Voter
         // you know $subject is a Trick object, thanks to `supports()`
         /** @var Trick $trick */
         $trick = $subject;
-
+       
         return match($attribute) {
             // self::VIEW => $this->canView($trick, $user),
             self::EDIT => $this->canEdit($trick, $user),
@@ -75,12 +75,12 @@ class TrickVoter extends Voter
     private function canEdit(Trick $trick, User $user): bool
     {
         // this assumes that the Trick object has a `getOwner()` method
-        return $user === $trick->getUser();
+        return $user == $trick->getUser();
     }
 
     private function canDelete(Trick $trick, User $user): bool
     {
         // this assumes that the Trick object has a `getOwner()` method
-        return $user === $trick->getUser();
+        return $user == $trick->getUser();
     }
 }

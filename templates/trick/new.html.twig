@@ -5,6 +5,7 @@
 {% block body %}
 
 {{ form_start(form) }}
+{{ form_widget(form._token)}}
 <section id="portfolio-details" class="portfolio-details pt-0 mt-5 mb-3">
   <div class="container mt-5">
     <div class="row gy-4">
@@ -12,18 +13,6 @@
         <div>
           <div>
           {% set headerExists = false %}
-          {# {% for picture in trick.pictures %}
-            {% if picture.header == true %}
-            {% set headerExists = true %}
-            <div class="modalImgHeader" style="opacity:0.85; background: center/100% 100% no-repeat url('../../img/{{ picture.path }}')">
-                <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
-                </div>
-                <div class="gridTrickName d-flex align-items-center justify-content-center">
-                    <h2 class="trickName">{{ form_widget(form.name) }} </h2>
-                </div>
-            </div>
-            {% endif %}
-          {% endfor %} #}
           {% if headerExists == false %}
             <div class="modalImgHeader" style="opacity:0.85; background: center/100% 100% no-repeat url('../../img/header_default.jpg')">
                 <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
@@ -39,98 +28,40 @@
         </div>
     </div>
   </div>
-  <div class="d-flex flex-lg-row justify-content-center sticky-bottom bigdisappear" style="display=block">
-    <div>
-      <button id ="loadMoreDetailsBottom" class="buttons mt-4 mb-2" onclick="displayMoreDetailsBottom()" style="position:relative">
-        <i class="bi bi-arrow-clockwise"></i> See medias 
-      </button>
-    </div>
-  </div>
-  <div class="centered">
+  <div class="centered col-lg-12">
     <div class="container mt-4 mb-4 miniHideMedias col-lg-12">
       <div class="row portfolio-container">
-        <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center arrowLeft">
-          <i class="bi bi-caret-left xarrows arrowLeft" onclick="displayMediasLeft()"></i>
-          <!-- Div de mise en page -->
+        <div class="detailsToShow col-lg-4 portfolio-item filter-card card">
+          <p class="img-fluid">Ajouter un ou plusieurs médias à votre figure.</p>
         </div>
-        {% set medias = [] %}
-        {% for picture in form.pictures %}
-          {% set medias = medias|merge([picture]) %}
-        {% endfor %}
-        {% for video in form.videos %}
-          {% set medias = medias|merge([video]) %}
-        {% endfor %}
-        
-        {% for media in medias %}
-          <div class="detailsToShow col-lg-2 portfolio-item filter-card card mediasTotal mediaCarroussel">
-            {# {% include 'picture/_form.html.twig' with {form: picture} %} #}
-          {% if media is instanceof('App\\Entity\\Picture') %}
-            <img src="{{ asset('img/' ~ media.vars.value.path ) }}" class="img-fluid" alt="">
-          {% endif %}
-          {% if media is instanceof('App\\Entity\\Video') %}
-            <iframe width="100%" height="100%" src="{{ media.vars.value.path }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
-            </iframe>
-          {% endif %}
-            <div class="portfolio-info card-body">
-              <h4 class="preview-link"></h4>
-              <div>
-                  {# <a href="{{ path('', {'id': picture.vars.value.id}) }}" class="preview-link" ><i class="bi bi-pencil"></i></a> #}
-                  <a href="#" class="preview-link" data-bs-toggle="modal" data-bs-target="#editModal"><i class="bi bi-pencil"></i></a>
-                  <a href="#" class="btn details-link btn-remove" title="More Details"><i class="bi bi-trash"></i></a>
-              </div>
-            </div>
-          </div>
-        {% else %}
-            <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
-              <p class="img-fluid">Ajouter un ou plusieurs médias à votre figure.</p>
-            </div>
-        {% endfor %}
-        <div class="detailsToShow col-lg-3 portfolio-item filter-card card">
+        <div class="detailsToShow col-lg-4 portfolio-item filter-card card">
           <div class="centered addMedia" style="height:100%">
             <a class="preview-link centered">
-              {# <svg xmlns="http://www.w3.org/2000/svg" width="30%" height="30%" fill="currentColor" class="bi bi-plus-lg img-fluid" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-              </svg> #}
               <div id="trick_pictures" data-prototype="{{ include('trick/_picture.html.twig', {form: form.pictures.vars.prototype})|e("html_attr") }}" data-index="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}">
-                {% for picture in form.pictures %}
-                    <div class="input-media">
-                    {{  include('trick/_picture.html.twig', {form: picture}) }}
-                    </div>
-                {% endfor %}
                 <button type="button" data-collection="#trick_pictures" class="btn-new">Ajouter une image</button>
               </div>
             </a>
           </div>
         </div>
-        <div class="detailsToShow col-lg-3 portfolio-item filter-card card">
+        <div class="detailsToShow col-lg-4 portfolio-item filter-card card">
           <div class="centered addMedia" style="height:100%">
             <a class="preview-link centered">
-            
-              {# <svg xmlns="http://www.w3.org/2000/svg" width="30%" height="30%" fill="currentColor" class="bi bi-plus-lg img-fluid" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-              </svg> #}
               <div id="trick_videos" data-prototype="{{ include('trick/_video.html.twig', {form: form.videos.vars.prototype})|e("html_attr") }}" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}">
-                {% for video in form.videos %}
-                    <div class="input-media">
-                    {{  include('trick/_video.html.twig', {form: video}) }}
-                    </div>
-                {% endfor %}
                 <button type="button" data-collection="#trick_videos" class="btn-new">Ajouter une vidéo</button>
               </div>
             </a>
           </div>
         </div>
-
-        <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center arrowRight">
-          <i class="bi bi-caret-right xarrows arrowRight" onclick="displayMediasRight()"></i>
-        <!-- Div de mise en page -->
-        </div>
       </div>
     </div>
   </div>
 </section>
+
 <!-- End Portfolio Details Section -->
 <section class="about miniReduce mt-5">
+<div class="error_name">
+  {{form_errors(form.pictures)}}
+</div>
   <div class=" d-flex flex-row justify-content-center miniModalCrunch">
       <p><span class="badge bg-secondary mx-2 miniCrush">{{ form_widget(form.category) }}</span></p>
       <p><span class="badge bg-menthe mx-2 miniCrush">Crée: {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
@@ -167,35 +98,7 @@
     </div>
     <!-- End Footer -->
 </section> 
-
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog d-flex flex-column align-items-center miniMargPady" >
-    <div class="modal-content rounded-0" style="width:1000px">
-      <div class="modal-body miniMargPady">
-        <h1>Edit Picture</h1>
-
-        {{ include('picture/_form.html.twig', {'button_label': 'Update'}) }}
-
-        {# <a href="{{ path('app_picture_index') }}">back to list</a> #}
-
-        {# {{ include('picture/_delete_form.html.twig') }} #}
-      </div>
-    </div>
-  </div>
-</div>
-{{ form_end(form) }}
-
-<!-- New picture Modal -->
-<div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog d-flex flex-column align-items-center miniMargPady" >
-    <div class="modal-content rounded-0" style="width:1000px">
-      <div class="modal-body miniMargPady">
-        {# {{ include('picture/_form.html.twig', {'button_label': 'Save'}) }} #}
-      </div>
-    </div>
-  </div>
-</div>
+{{ form_end(form, {render_rest: false}) }}
 
 <script>
     const newItem = (e) => {

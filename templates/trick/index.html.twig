@@ -3,29 +3,6 @@
 {% block title %}Snowtricks{% endblock %}
 
 {% block body %}
-    {# <h1>Trick index</h1> #}
-
-  <!-- ======= Header ======= -->
-  {# <header id="header" class="fixed-top d-flex align-items-center header-transparent minidisappear">
-    <div class="container d-flex justify-content-between align-items-center">
-      <div id="logo">
-        <h1><a href="/">Snowtricks</a></h1>
-      </div>
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto active" href="/">Home</a></li>
-          <li><a class="nav-link scrollto " href="/">Tricks</a></li>
-          <li><a href="forms/login.php" class="nav-link scrollto" href="#services">Sign in</a></li>
-          <li><a href="forms/registration.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link">Sign up</a></li>
-          <li><a class="nav-link scrollto disco" href="#team"><i class="bi bi-power"></i></a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
-    </div>
-  </header><!-- End Header --> #}
-
-  <!-- ======= Hero Section ======= -->
-  
   <section id="hero">
     <div class="hero-container aos-init aos-animate" data-aos="zoom-in" data-aos-delay="100">
       {% for message in app.flashes('success') %}
@@ -42,7 +19,7 @@
       <h2>Partageons ensemble notre passion du snowboard!</h2>
       <a href="#portfolio" class="top-to-back d-flex align-items-center justify-content-center"><i class="bi bi-arrow-down-short"></i></a>
     </div>
-  </section><!-- End Hero Section -->
+  </section>
 
   <main id="main">
     <!-- ======= Portfolio Section ======= -->
@@ -77,10 +54,12 @@
                       <h4><a href="{{ path('app_trick_show', {'slug': trick.slug}) }}" class="preview-link">{{ trick.name }}</a></h4>
                       <div>
                           <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" class="preview-link" ><i class="bi bi-pencil"></i></a>
-                          {# <button class="details-link" title="More Details" onclick="deleteConfirm({{trick.id}})"><i class="bi bi-trash"></i></button> #}
-                          <div class="details-link" title="More Details">
-                            {{ include('trick/_delete_form.html.twig') }}
+                          <div class="details-link" title="Delete">
+                          {# <a href="{{ path('app_trick_delete', {'id': trick.id}) }}">
+                          <button type="submit" class="btn btn-secondary" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}" title="delete"><i class="bi bi-trash"></i></button></a> #}
+                            {% include 'trick/_delete_form.html.twig'  with {'id': trick.id, 'csrf_token': 'delete' ~ trick.id} %}
                           </div>
+                          
                       </div>
                   </div>
                 </div>

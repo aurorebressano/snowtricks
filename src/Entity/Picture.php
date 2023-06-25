@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PictureRepository::class)]
 class Picture
@@ -25,9 +26,14 @@ class Picture
     #[ORM\JoinColumn(nullable: false)]
     private ?user $publisher = null;
 
+    #[Assert\File(
+        extensions: ['png', 'jpg', 'jpeg'],
+        extensionsMessage: 'Please upload a valid file (png, jpeg, jpg)',
+    )]
     private ?File $file = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?bool $header = null;
 
     public function getId(): ?int

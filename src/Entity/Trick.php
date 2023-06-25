@@ -28,6 +28,8 @@ class Trick
     #[Assert\Length(min:2, minMessage: 'Le nom de la figure doit contenir au moins {{ limit }} caractères')]
     private ?string $name = null;
 
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
@@ -46,6 +48,7 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, orphanRemoval: true, cascade:['persist'])]
     private Collection $videos;
 
+    #[Assert\NotNull]
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
