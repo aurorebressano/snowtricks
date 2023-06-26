@@ -350,6 +350,29 @@ function displayMoreDetailsBottom()
   }
 }
 
+function displayMiniMedias()
+{
+  let medias= document.getElementsByClassName("miniHideMedias");
+  let hiddenMedias = document.getElementsByClassName("mediaCarroussel");
+
+  if(medias.length == 0)
+  {
+    document.getElementById("loadMoreMedias").classList.add("noContent");
+  }
+  else
+  {
+      medias[0].classList.remove("miniHideMedias");
+      document.getElementsByClassName("arrowLeft")[0].classList.add("minidisappear");
+      document.getElementsByClassName("arrowRight")[0].classList.add("minidisappear");
+
+      for(var i in hiddenMedias)
+      {
+         var hiddenMedia = hiddenMedias[i];
+         hiddenMedia.classList.add("miniAppear");
+      }
+  }
+}
+
 function deleteConfirm(id)
 {
     var confirmation = window.confirm('Etes-vous sûr de vouloir supprimer cette figure ?') ;

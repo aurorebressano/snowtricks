@@ -18,7 +18,7 @@
                 <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
                 </div>
                 <div class="gridTrickName d-flex align-items-center justify-content-center">
-                    <h2 class="trickName">{{ form_widget(form.name) }} </h2>
+                    <h2 class="trickName trickName miniName miniRow">{{ form_widget(form.name) }} </h2>
                 </div>
                 <div class="error_name">
                   {{form_errors(form)}}
@@ -58,11 +58,8 @@
 </section>
 
 <!-- End Portfolio Details Section -->
-<section class="about miniReduce mt-5">
-<div class="error_name">
-  {{form_errors(form.pictures)}}
-</div>
-  <div class=" d-flex flex-row justify-content-center miniModalCrunch">
+<section class="about miniReduce miniBody mt-5">
+  <div class="d-flex bigRowMiniCol justify-content-center miniModalCrunch miniBody">
       <p><span class="badge bg-secondary mx-2 miniCrush">{{ form_widget(form.category) }}</span></p>
       <p><span class="badge bg-menthe mx-2 miniCrush">Crée: {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
       <p><span class="badge bg-secondary mx-2 miniCrush">Modif: {{ trick.updateDate ? trick.updateDate|date('Y-m-d H:i:s') : 'non modifié' }}</span></p>
@@ -75,7 +72,7 @@
             <div class="form col-9">
                 <div class="d-flex flex-column justify-content-center w-100">
                     <div class="w-100 mb-2">
-                        <div class="input-group centered">
+                        <div class="input-group centered miniTextarea">
                             {{ form_row(form.description) }}
                         </div>
                     </div>            
@@ -86,17 +83,6 @@
     <div class="modal-footer border-0 miniModalFooter">
         <button type="submit" class="btn bg-menthe">{{ button_label|default('Save') }}</button>
     </div>
-    <!-- ======= Footer ======= -->
-    <div id="footer" class="bigdisappear mb-5 mr-5 miniModalRealFooter">
-        <div class="footer-top">
-            <div class="footer-adapt">
-                <a href="index.php"><i class="bi bi-house-fill"></i></a>
-                <a href=""><i class="bi bi-bookmark-fill"></i></a>
-                <a href="forms/contact.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link"><i class="bi bi-box-arrow-in-right"></i></a>
-            </div>
-        </div>
-    </div>
-    <!-- End Footer -->
 </section> 
 {{ form_end(form, {render_rest: false}) }}
 

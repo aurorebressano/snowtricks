@@ -45,6 +45,12 @@
         visibility: visible;
     }
 
+    .miniAppear
+    {
+        /* antidote to 'content' */
+        display:flex;
+    }
+
     .minidisappear
     {
         height:0 !important;

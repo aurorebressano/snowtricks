@@ -70,10 +70,12 @@
         <div class="detailsToShow col-lg-2 portfolio-item filter-card card mediasTotal mediaCarroussel input-media">
         {% if media.vars.value is instanceof('App\\Entity\\Picture') %}
           <img src="{{ asset('img/' ~ media.vars.value.path ) }}" class="img-fluid" alt="">
+          {{ include('trick/_picture.html.twig', {form: media}) }}
         {% endif %}
         {% if media.vars.value is instanceof('App\\Entity\\Video') %}
           <iframe width="100%" height="100%" src="{{ media.vars.value.path }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
           </iframe>
+          {{ include('trick/_video.html.twig', {form: media}) }}
         {% endif %}
           <div class="portfolio-info card-body">
             <h4 class="preview-link"></h4>

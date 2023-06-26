@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
-#[UniqueEntity(fields:['name'], message:'Le nom de la figure est déjà utilisé')]
+#[UniqueEntity(fields:['name'], message:'Le nom de la figure est déjà utilisé', groups: ['new', 'edit'])]
 class Trick
 {
     #[ORM\Id]
@@ -24,12 +24,12 @@ class Trick
     private ?User $user = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\NotBlank(message: 'Veuillez renseigner ce champ')]
-    #[Assert\Length(min:2, minMessage: 'Le nom de la figure doit contenir au moins {{ limit }} caractères')]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un nom pour la figure', groups: ['new', 'edit'])]
+    #[Assert\Length(min:2, minMessage: 'Le nom de la figure doit contenir au moins {{ limit }} caractères', groups: ['new', 'edit'])]
     private ?string $name = null;
 
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'Veuillez renseigner une description', groups: ['new', 'edit'])]
+    #[Assert\NotNull(message: 'Veuillez renseigner une description', groups: ['new', 'edit'])]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
