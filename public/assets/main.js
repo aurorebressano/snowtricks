@@ -1,15 +1,17 @@
-/**
-* Template Name: Regna - v4.10.0
-* Template URL: https://bootstrapmade.com/regna-bootstrap-onepage-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
+const countMedias = document.getElementsByClassName("mediasTotal");
+let arrCount = [];
+
+for(var l in countMedias)
+{
+  arrCount.push(countMedias[l]);
+}
+
+const displayMedias = arrCount.slice(0, 4);
+var displayMediasMove = displayMedias;
+
 (function() {
   "use strict";
 
-  /**
-   * Easy selector helper function
-   */
   const select = (el, all = false) => {
     el = el.trim()
     if (all) {
@@ -19,9 +21,6 @@
     }
   }
 
-  /**
-   * Easy event listener function
-   */
   const on = (type, el, listener, all = false) => {
     let selectEl = select(el, all)
     if (selectEl) {
@@ -33,16 +32,10 @@
     }
   }
 
-  /**
-   * Easy on scroll event listener 
-   */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)
   }
 
-  /**
-   * Navbar links active state on scroll
-   */
   let navbarlinks = select('#navbar .scrollto', true)
   const navbarlinksActive = () => {
     let position = window.scrollY + 200
@@ -60,9 +53,6 @@
   window.addEventListener('load', navbarlinksActive)
   onscroll(document, navbarlinksActive)
 
-  /**
-   * Scrolls to an element with header offset
-   */
   const scrollto = (el) => {
     let header = select('#header')
     let offset = header.offsetHeight
@@ -78,9 +68,6 @@
     })
   }
 
-  /**
-   * Toggle .header-scrolled class to #header when page is scrolled
-   */
   let selectHeader = select('#header')
   if (selectHeader) {
     const headerScrolled = () => {
@@ -94,9 +81,6 @@
     onscroll(document, headerScrolled)
   }
 
-  /**
-   * Back to top button
-   */
   let backtotop = select('.back-to-top')
   if (backtotop) {
     const toggleBacktotop = () => {
@@ -110,18 +94,12 @@
     onscroll(document, toggleBacktotop)
   }
 
-  /**
-   * Mobile nav toggle
-   */
   on('click', '.mobile-nav-toggle', function(e) {
     select('#navbar').classList.toggle('navbar-mobile')
     this.classList.toggle('bi-list')
     this.classList.toggle('bi-x')
   })
 
-  /**
-   * Mobile nav dropdowns activate
-   */
   on('click', '.navbar .dropdown > a', function(e) {
     if (select('#navbar').classList.contains('navbar-mobile')) {
       e.preventDefault()
@@ -129,9 +107,6 @@
     }
   }, true)
 
-  /**
-   * Scrool with ofset on links with a class name .scrollto
-   */
   on('click', '.scrollto', function(e) {
     if (select(this.hash)) {
       e.preventDefault()
@@ -147,23 +122,27 @@
     }
   }, true)
 
-  /**
-   * Scroll with ofset on page load with hash links in the url
-   */
   window.addEventListener('load', () => {
     if (window.location.hash) {
       if (select(window.location.hash)) {
         scrollto(window.location.hash)
       }
     }
+
+    // Afficher seulement les 4 premiers medias
+    if(countMedias.length != 0)
+    {
+      for(var k in displayMediasMove)
+      {
+        displayMediasMove[k].classList.remove("mediaCarroussel");
+        displayMediasMove[k].classList.add("mediaDisplay");
+      }
+    }
   });
 
-  /**
-   * Porfolio isotope and filter
-   */
+  // Afficher seulement les premieres tricks
 
   let cont = document.getElementsByClassName("content");
-
   let arrToDisplay = [];
   
   for(var j in cont)
@@ -177,6 +156,7 @@
   {
     arrToDisplay[k].classList.remove("content");
   }
+
 
   window.addEventListener('load', () => {
 
@@ -213,16 +193,10 @@
       }, true);
     });
 
-  /**
-   * Initiate portfolio lightbox 
-   */
   const portfolioLightbox = GLightbox({
     selector: '.portfolio-lightbox'
   });
 
-  /**
-   * Portfolio details slider
-   */
   new Swiper('.portfolio-details-slider', {
     speed: 400,
     loop: true,
@@ -237,9 +211,6 @@
     }
   });
 
-  /**
-   * Animation on scroll
-   */
   window.addEventListener('load', () => {
     AOS.init({
       duration: 1000,
@@ -249,9 +220,6 @@
     })
   });
 
-  /**
-   * Initiate Pure Counter 
-   */
   new PureCounter();
 
 })()
@@ -260,6 +228,7 @@ function display()
 {
   let count = document.getElementsByClassName("content");
   let arrCount = [];
+  let displayTricks = [];
 
   for(var l in count)
   {
@@ -272,12 +241,87 @@ function display()
   }
   else
   {
-    arrToDisplay = arrCount.slice(0, 22);
+    displayTricks = arrCount.slice(0, 22);
 
-    for(var k in arrToDisplay)
+    for(var k in displayTricks)
     {
-      arrToDisplay[k].classList.remove("content");
+      displayTricks[k].classList.remove("content");
     }
+  }
+}
+
+function displayMediasLeft()
+{
+  // let count = document.getElementsByClassName("mediaCarroussel");
+  displayMediasMove = document.getElementsByClassName("mediaDisplay");
+
+  let arrCount = [];
+  let displayMediasL = [];
+
+  for(let l in countMedias)
+  {
+    arrCount.push(countMedias[l]);
+  }
+
+  for(let x in displayMediasMove)
+  {
+    displayMediasL.push(displayMediasMove[x]);
+  }
+
+  let idElemToDisplay = arrCount.indexOf(displayMediasL[0]);
+  console.log(idElemToDisplay);
+
+  if(!idElemToDisplay <= 0)
+  {
+    let elemToDisplay = arrCount[idElemToDisplay - 1];
+    elemToDisplay.classList.add("mediaDisplay");
+    elemToDisplay.classList.remove("mediaCarroussel");
+
+    let elemToHide = displayMediasL[3];
+    elemToHide.classList.add("mediaCarroussel");
+    elemToHide.classList.remove("mediaDisplay");
+  }
+  else
+  {
+    console.log("COUCOU");
+    console.log(idElemToDisplay);
+  }
+}
+
+function displayMediasRight()
+{
+  displayMediasMove = document.getElementsByClassName("mediaDisplay");
+
+  let arrCount = [];
+  let displayMediasR = [];
+
+  for(let l in countMedias)
+  {
+    arrCount.push(countMedias[l]);
+  }
+  for(let x in displayMediasMove)
+  {
+    displayMediasR.push(displayMediasMove[x]);
+  }
+
+  // let idElemToDisplay = arrCount.indexOf(displayMediasR[displayMediasR.length -1]);
+  let idElemToDisplay = arrCount.indexOf(displayMediasR[3]);
+  console.log(idElemToDisplay);
+
+  if(idElemToDisplay != arrCount.length -1)
+  {
+    let elemToDisplay = arrCount[idElemToDisplay + 1];
+    elemToDisplay.classList.add("mediaDisplay");
+    elemToDisplay.classList.remove("mediaCarroussel");
+
+    let elemToHide = displayMediasR[0];
+    elemToHide.classList.add("mediaCarroussel");
+    elemToHide.classList.remove("mediaDisplay");
+  }
+  else
+  {
+    console.log("COUCOU");
+    console.log(idElemToDisplay);
   }
 }
 
@@ -306,18 +350,51 @@ function displayMoreDetailsBottom()
   }
 }
 
-function deleteConfirm()
+function displayMiniMedias()
+{
+  let medias= document.getElementsByClassName("miniHideMedias");
+  let hiddenMedias = document.getElementsByClassName("mediaCarroussel");
+
+  if(medias.length == 0)
+  {
+    document.getElementById("loadMoreMedias").classList.add("noContent");
+  }
+  else
+  {
+      medias[0].classList.remove("miniHideMedias");
+      document.getElementsByClassName("arrowLeft")[0].classList.add("minidisappear");
+      document.getElementsByClassName("arrowRight")[0].classList.add("minidisappear");
+
+      for(var i in hiddenMedias)
+      {
+         var hiddenMedia = hiddenMedias[i];
+         hiddenMedia.classList.add("miniAppear");
+      }
+  }
+}
+
+function deleteConfirm(id)
 {
     var confirmation = window.confirm('Etes-vous sûr de vouloir supprimer cette figure ?') ;
-    if(confirmation === true)
+    if(confirmation == true)
     {
-      const queryString = window.location.search;
-      console.log(queryString);
-      const urlParams = new URLSearchParams(queryString);
-      location.replace("/figure/delete/"+ urlParams.get('id'));
+       //window.location.href = "figure/delete/" + $id;
+       const queryString = window.location.search;
+       console.log(queryString);
+       const urlParams = new URLSearchParams(queryString);
+       location.replace("/figure/delete/"+ id);
     }
 }
 
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+function toggleMediasEdition()
+{
+   var sectionToAppear = document.querySelector('.anchorEditVisibility');
+   sectionToAppear.classList.remove("editMedias");
+
+   var sectionToHide = document.querySelector('.addMedia');
+   sectionToHide.classList.add("editMedias");
+}
+
+// $(function () {
+//   $('[data-toggle="tooltip"]').tooltip()
+// })

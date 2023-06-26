@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
             // delete token
             $user->setToken(null);
             $user->setIsValidated(true);
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles(['ROLE_USER', 'ROLE_PUBLISHER']);
 
             $userRepository->save($user, true);
 

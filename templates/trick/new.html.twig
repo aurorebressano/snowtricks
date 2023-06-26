@@ -3,80 +3,67 @@
 {% block title %}New Trick{% endblock %}
 
 {% block body %}
-    {# <h1>Create new Trick</h1> #}
 
-    {# {{ include('trick/_form.html.twig') }} #}
-
-    <!-- ////////////////////////// -->
 {{ form_start(form) }}
+{{ form_widget(form._token)}}
 <section id="portfolio-details" class="portfolio-details pt-0 mt-5 mb-3">
   <div class="container mt-5">
     <div class="row gy-4">
       <div>
         <div>
           <div>
-            <div class="modalImgHeader imgToDisplay" style="opacity:0.85">
-              <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
-                <div class="editDelete d-flex flex-row justify-content-around align-items-center px-2 py-3" style="opacity:1">
-                  <a href="{{ path('app_trick_new', {'id': trick.id}) }}" data-gallery="portfolioGallery" title="App 2"><i class="bi bi-pencil"></i></a>
-                  <a href="{{ path('app_trick_delete', {'id': trick.id}) }}" class="details-link" title="More Details"><i class="bi bi-trash"></i></a>
+          {% set headerExists = false %}
+          {% if headerExists == false %}
+            <div class="modalImgHeader" style="opacity:0.85; background: center/100% 100% no-repeat url('../../img/header_default.jpg')">
+                <div class="editDeleteIcons d-flex flex-row-reverse align-items-start">
                 </div>
-              </div>
-              <div class="gridTrickName d-flex align-items-center justify-content-center">
-                <h2 class="trickName">{{ form_widget(form.name) }}</h2>
-              </div>
+                <div class="gridTrickName d-flex align-items-center justify-content-center">
+                    <h2 class="trickName trickName miniName miniRow">{{ form_widget(form.name) }} </h2>
+                </div>
+                <div class="error_name">
+                  {{form_errors(form)}}
+                </div>
             </div>
+          {% endif %}
         </div>
     </div>
   </div>
-  <div class="d-flex flex-lg-row justify-content-center sticky-bottom bigdisappear" style="display=block">
-    <div>
-      <button id ="loadMoreDetailsBottom" class="buttons mt-4 mb-2" onclick="displayMoreDetailsBottom()" style="position:relative">
-        <i class="bi bi-arrow-clockwise"></i> See medias 
-      </button>
-    </div>
-  </div>
-  <div class="container mt-4 mb-4 miniHideMedias">
-    <div class="row portfolio-container">
-      <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center">
-        <i class="bi bi-caret-left xarrows"></i>
-        <!-- Div de mise en page -->
-      </div>
-
-      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
-        <img src="{{asset('assets/img/portfolio/mute_mini.png')}}" class="img-fluid" alt="">
-      </div>
-
-      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
-        <img src="{{asset('assets/img/portfolio/backsideair_mini.png')}}" class="img-fluid" alt="">
-      </div>
-
-      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
-        <img src="{{asset('assets/img/portfolio/japanair_mini.png')}}" class="img-fluid" alt="">
-      </div>
-
-      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
-        <img src="{{asset('assets/img/portfolio/nosegrab_mini.png')}}" class="img-fluid" alt="">
-      </div>
-
-      <div class="detailsToShow col-lg-2 portfolio-item filter-card card">
-        <img src="{{asset('assets/img/portfolio/tailgrab_mini.png')}}" class="img-fluid" alt="">
-      </div>
-
-      <div class="col-lg-1 portfolio-item filter-card d-flex flex-row align-items-center justify-content-center">
-        <i class="bi bi-caret-right xarrows"></i>
-      <!-- Div de mise en page -->
+  <div class="centered col-lg-12">
+    <div class="container mt-4 mb-4 col-lg-12">
+      <div class="row portfolio-container">
+        <div class="detailsToShow col-lg-4 portfolio-item filter-card card">
+          <p class="img-fluid">Ajouter un ou plusieurs médias à votre figure.</p>
+        </div>
+        <div class="detailsToShow col-lg-4 portfolio-item filter-card card">
+          <div class="centered addMedia" style="height:100%">
+            <a class="preview-link centered">
+              <div id="trick_pictures" data-prototype="{{ include('trick/_picture.html.twig', {form: form.pictures.vars.prototype})|e("html_attr") }}" data-index="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}">
+                <button type="button" data-collection="#trick_pictures" class="btn-new">Ajouter une image</button>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="detailsToShow col-lg-4 portfolio-item filter-card card">
+          <div class="centered addMedia" style="height:100%">
+            <a class="preview-link centered">
+              <div id="trick_videos" data-prototype="{{ include('trick/_video.html.twig', {form: form.videos.vars.prototype})|e("html_attr") }}" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}">
+                <button type="button" data-collection="#trick_videos" class="btn-new">Ajouter une vidéo</button>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 <!-- End Portfolio Details Section -->
-<section class="about miniReduce mt-5">
-  <div class=" d-flex flex-row justify-content-center miniModalCrunch">
+<section class="about miniReduce miniBody mt-5">
+  <div class="d-flex bigRowMiniCol justify-content-center miniModalCrunch miniBody">
       <p><span class="badge bg-secondary mx-2 miniCrush">{{ form_widget(form.category) }}</span></p>
-      {# <p><span class="badge bg-menthe mx-2 miniCrush">Crée: {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
+      <p><span class="badge bg-menthe mx-2 miniCrush">Crée: {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
       <p><span class="badge bg-secondary mx-2 miniCrush">Modif: {{ trick.updateDate ? trick.updateDate|date('Y-m-d H:i:s') : 'non modifié' }}</span></p>
-      <p><span class="badge bg-menthe mx-2 miniCrush">By {{ trick.user }}</span></p> #}
+      <p><span class="badge bg-menthe mx-2 miniCrush">By {{ trick.user }}</span></p>
   </div>
 </section>
 <section class="comment justify-content-center miniModalForm mr-5">
@@ -85,7 +72,7 @@
             <div class="form col-9">
                 <div class="d-flex flex-column justify-content-center w-100">
                     <div class="w-100 mb-2">
-                        <div class="input-group centered">
+                        <div class="input-group centered miniTextarea">
                             {{ form_row(form.description) }}
                         </div>
                     </div>            
@@ -94,21 +81,35 @@
         </div>
     </div>
     <div class="modal-footer border-0 miniModalFooter">
-        <button type="submit" class="btn btn-secondary" formaction="{{ path('app_trick_index') }}">Back to list</button>
         <button type="submit" class="btn bg-menthe">{{ button_label|default('Save') }}</button>
     </div>
-    <!-- ======= Footer ======= -->
-    <div id="footer" class="bigdisappear mb-5 mr-5 miniModalRealFooter">
-        <div class="footer-top">
-            <div class="footer-adapt">
-                <a href="index.php"><i class="bi bi-house-fill"></i></a>
-                <a href=""><i class="bi bi-bookmark-fill"></i></a>
-                <a href="forms/contact.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link"><i class="bi bi-box-arrow-in-right"></i></a>
-            </div>
-        </div>
-    </div>
-    <!-- End Footer -->
 </section> 
-{{ form_end(form) }}
+{{ form_end(form, {render_rest: false}) }}
+
+<script>
+    const newItem = (e) => {
+    const collectionHolder = document.querySelector(e.currentTarget.dataset.collection);
+
+    const item = document.createElement("div");
+    item.innerHTML = collectionHolder
+        .dataset
+        .prototype
+        .replace(
+            /__name__/g,
+            collectionHolder.dataset.index
+        );
+
+    item.querySelector(".btn-remove").addEventListener("click", () => item.remove());
+
+    collectionHolder.appendChild(item);
+
+    collectionHolder.dataset.index++;
+
+    };
+
+    document.querySelectorAll('.btn-remove').forEach(btn => btn.addEventListener("click", (e) => e.currentTarget.closest(".input-media").remove()));
+
+    document.querySelectorAll('.btn-new').forEach(btn => btn.addEventListener('click', newItem));
+</script>
 {% endblock %}
 

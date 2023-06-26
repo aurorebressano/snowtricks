@@ -1,4 +1,52 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+{{ form_widget(form._token)}}
+    {# {{ form_widget(form) }} #}
+    <div id="trick_pictures" data-prototype="{{ include('trick/_picture.html.twig', {form: form.pictures.vars.prototype})|e("html_attr") }}" data-index="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}">
+        {% for picture in form.pictures %}
+            <div class="input-media">
+            {{  include('trick/_picture.html.twig', {form: picture}) }}
+            </div>
+        {% endfor %}
+        <button type="button" data-collection="#trick_pictures" class="btn-new">Ajouter une image</button>
+    </div>
+
+    <div id="trick_videos" data-prototype="{{ include('trick/_video.html.twig', {form: form.videos.vars.prototype})|e("html_attr") }}" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}">
+        {% for video in form.videos %}
+            <div class="input-media">
+            {{  include('trick/_video.html.twig', {form: video}) }}
+            </div>
+        {% endfor %}
+        <button type="button" data-collection="#trick_videos" class="btn-new">Ajouter une vidéo</button>
+    </div>
+    
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.category) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{{ form_end(form, {render_rest: false}) }}
+
+<script>
+    const newItem = (e) => {
+    const collectionHolder = document.querySelector(e.currentTarget.dataset.collection);
+
+    const item = document.createElement("div");
+    item.innerHTML = collectionHolder
+        .dataset
+        .prototype
+        .replace(
+            /__name__/g,
+            collectionHolder.dataset.index
+        );
+
+    item.querySelector(".btn-remove").addEventListener("click", () => item.remove());
+
+    collectionHolder.appendChild(item);
+
+    collectionHolder.dataset.index++;
+
+    };
+
+    document.querySelectorAll('.btn-remove').forEach(btn => btn.addEventListener("click", (e) => e.currentTarget.closest(".input-media").remove()));
+
+    document.querySelectorAll('.btn-new').forEach(btn => btn.addEventListener('click', newItem));
+</script>

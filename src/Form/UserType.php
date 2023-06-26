@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,14 +14,20 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
-            // ->add('password')
-            ->add('isValidated')
+            // ->add('roles')
+            ->add('password')
+            // ->add('isValidated')
             ->add('name')
             ->add('firstname')
-            ->add('picture')
-            ->add('registrationDate')
+            // ->add('registrationDate')
             // ->add('token')
+            ->add('file', FileType::class, [
+                'attr'=>[
+                    'label'=> 'Avatar: ', 
+                    'placeholder'=>'Add one avatar to your profile'
+                ],
+                'required'=>false,
+            ])
         ;
     }
 

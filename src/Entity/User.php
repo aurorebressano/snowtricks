@@ -9,9 +9,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -36,19 +38,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[SecurityAssert\UserPassword(
+        message: 'Wrong value for your current password',
+    )]
     private ?string $password = null;
 
     #[ORM\Column]
     private ?bool $isValidated = false;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: "Veuillez renseigner votre nom")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: "Veuillez renseigner votre prénom")]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
+
+    private ?File $file = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $registrationDate = null;
@@ -67,6 +77,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'publisher', targetEntity: Video::class, orphanRemoval: true)]
     private Collection $videos;
+
+    // #[ORM\OneToOne(mappedBy: 'user', targetEntity: Avatar::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    // private ?Avatar $avatar = null;
 
     public function __construct()
     {
@@ -232,7 +245,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->tricks->contains($trick)) {
             $this->tricks->add($trick);
-            $trick->setUserId($this);
+            $trick->setUser($this);
         }
 
         return $this;
@@ -242,8 +255,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->tricks->removeElement($trick)) {
             // set the owning side to null (unless already changed)
-            if ($trick->getUserId() === $this) {
-                $trick->setUserId(null);
+            if ($trick->getUser() === $this) {
+                $trick->setUser(null);
             }
         }
 
@@ -338,8 +351,55 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return File|null
+     */
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param File|null $file
+     */
+    public function setFile(?File $file): void
+    {
+        $this->file = $file;
+    }
+
     public function __toString(): string
     {
         return $this->getName() . " " . $this->getFirstName();
     }
+
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'picture' => $this->picture,
+            'password' => $this->password,
+        ];
+    }
+    // public function getAvatar(): ?Avatar
+    // {
+    //     return $this->avatar;
+    // }
+
+    // public function setAvatar(?Avatar $avatar): self
+    // {
+    //     // unset the owning side of the relation if necessary
+    //     if ($avatar === null && $this->avatar !== null) {
+    //         $this->avatar->setUser(null);
+    //     }
+
+    //     // set the owning side of the relation if necessary
+    //     if ($avatar !== null && $avatar->getUser() !== $this) {
+    //         $avatar->setUser($this);
+    //     }
+
+    //     $this->avatar = $avatar;
+
+    //     return $this;
+    // }
 }

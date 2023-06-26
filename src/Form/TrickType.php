@@ -6,12 +6,14 @@ use App\Entity\Trick;
 use App\Entity\Category;
 use App\Entity\Message;
 use App\Entity\Picture;
+use App\Entity\Video;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\Count;
 
 class TrickType extends AbstractType
 {
@@ -38,12 +40,29 @@ class TrickType extends AbstractType
                 'entry_type' => PictureType::class,
                 'attr'=>[
                     'label'=> 'Picture: ', 
-                    'placeholder'=>'Add one or more pictures to your trick'
+                    'placeholder'=>'Add one or more media to your trick'
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'required'=>true
+                'required'=>true,
+                'constraints' => [
+                    new Count(min:1, minMessage:'Ajoutez au moins une image', groups: ["new", "edit"])
+                ]
+            ])
+            ->add('videos', CollectionType::class, [
+                'entry_type' => VideoType::class,
+                'attr'=>[
+                    'label'=> 'Video: ', 
+                    'placeholder'=>'Add one or more media to your trick'
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required'=>true,
+                'constraints' => [
+                    new Count(min:1, minMessage:'Ajoutez au moins une vidéo', groups: ["new", "edit"])
+                ]
             ]);
     }
 
@@ -51,6 +70,7 @@ class TrickType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trick::class,
+            "validation_groups" => []
         ]);
     }
 }

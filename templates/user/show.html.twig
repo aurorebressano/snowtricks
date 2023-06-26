@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %}
 
 {% block title %}User{% endblock %}
 
@@ -50,9 +50,72 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+    {# <a href="{{ path('app_user_index') }}">back to list</a> #}
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+    {# <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
 
     {{ include('user/_delete_form.html.twig') }}
+{% endblock %} #}
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+<!-- ======= About Section ======= -->
+    <section id="about" class="my-5">
+        <div class="container">
+            <h2 class="title my-5">Hello, {{ user.name }} !</h2>
+            <div class="row about-container">
+                <div class="col-lg-6 content order-lg-1 order-2">
+                    <div class="icon-box">
+                    <div class="icon"><i class="bi bi-briefcase"></i></div>
+                    <h4 class="title"><a href="">Email</a></h4>
+                    <p class="description">{{ user.email }}</p>
+                    </div>
+
+                    <div class="icon-box">
+                    <div class="icon"><i class="bi bi-card-checklist"></i></div>
+                    <h4 class="title"><a href="">Name:</a></h4>
+                    <p class="description">{{ user.name }}</p>
+                    </div>
+
+                    <div class="icon-box">
+                    <div class="icon"><i class="bi bi-binoculars"></i></div>
+                    <h4 class="title"><a href="">First name:</a></h4>
+                    <p class="description">{{ user.firstname }}</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 content order-lg-1 order-2">
+                    <div class="icon-box">
+                        {% if user.picture is defined and user.picture is not empty %}
+                            <img src="{{asset('img/' ~ user.picture )}}" height="100px">
+                        {% else %}
+                            <img src="{{asset('img/default.png')}}" height="100px">
+                        {% endif %}
+                    </div>
+                    <div class="icon-box">
+                    <div class="icon"><i class="bi bi-card-checklist"></i></div>
+                    <h4 class="title"><a href="">Registration date:</a></h4>
+                    <p class="description">{{ user.registrationDate ? user.registrationDate|date('Y-m-d H:i:s') : '' }}</p>
+                    </div>
+                    <div class="icon-box">
+                    <div class="icon"><i class="bi bi-binoculars"></i></div>
+                    <h4 class="title"><a href="">Password :</a></h4>
+                    <p class="description">°°°°°°°°°</p>
+                    {# <p class="description">{{ user.password }}</p> #}
+                    </div>
+                </div>
+                {# <div class="col-lg-6 background order-lg-2 order-1">
+                </div> #}
+            </div>
+        </div>
+    </section><!-- End About Section -->
+
+    <div class="modal-footer border-0 miniModalFooter mb-5 mx-5">
+        {{ include('user/_delete_form.html.twig') }}
+        <button class="btn bg-menthe mx-3"><a href="{{ path('app_user_edit', {'id': user.id}) }}" style="color:white">Edit</a></button>
+    </div>
+    
 {% endblock %}

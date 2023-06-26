@@ -18,10 +18,37 @@
         visibility: hidden;
     }
 
+    .miniName
+    {
+        width:80%;
+        margin-left:150px;
+        margin-right:150px;
+        padding-left:500px;
+    }
+
+    .bigRowMiniCol
+    {
+        flex-direction: column;
+    }
+
+    .miniRow
+    {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+
     .bigdisappear
     {
         height: inherit !important;
         visibility: visible;
+    }
+
+    .miniAppear
+    {
+        /* antidote to 'content' */
+        display:flex;
     }
 
     .minidisappear
@@ -80,10 +107,22 @@
         padding-right:120px;
     }
 
+    .miniTextarea
+    {
+        width:300px;
+        margin-left:-100px;
+    }
+
+    .miniTransform
+    {
+        display:block;
+    }
+
     .miniModalFooter
     {
         position: relative;
         justify-content: center;
+        margin-right:0px;
     }
 
     .miniModalRealFooter

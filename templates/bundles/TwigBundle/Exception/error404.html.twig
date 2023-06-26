@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<!-- ======= Header ======= -->
+<main id="main">
+    <section id="portfolio-details" class="portfolio-details pt-0 mt-5 mb-0">
+            <div class="container mt-5">
+                <div class="row gy-4 mt-5">
+                    <h1> Erreur 404 ! </h1>
+                    <p>La ressource demandée est indisponible, ou n'existe pas, ou le serveur n’arrive pas à la trouver. </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+{% endblock %}
+{% block footer %}
+<footer id="footer" class="fixed-bottom">
+    <div class="footer-top">
+    <div class="footer-adapt">
+        <a href="index.php"><i class="bi bi-house-fill"></i></a>
+        <a href=""><i class="bi bi-bookmark-fill"></i></a>
+        <a href="forms/contact.php" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link"><i class="bi bi-box-arrow-in-right"></i></a>
+    </div>
+    </div>
+
+    <div class="container">
+        &copy; Copyright 
+        {# <?= date('Y') ?>  #}
+    </div>
+</footer><!-- End Footer -->
+{% endblock %}

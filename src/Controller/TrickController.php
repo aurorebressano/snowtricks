@@ -12,7 +12,10 @@ use App\Repository\TrickRepository;
 use App\Repository\MessageRepository;
 use App\Repository\PictureRepository;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,30 +34,35 @@ class TrickController extends AbstractController
 
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function new(Request $request, TrickRepository $trickRepository, UserRepository $UserRepository): Response
+    public function new(Request $request, TrickRepository $trickRepository, UserRepository $UserRepository, FileUploader $fileUploader): Response
     {
         $trick = new Trick();
         $form = $this->createForm(
             TrickType::class,
             $trick,
-            ['validation_groups' => ['pictures', 'description']]
+            ["validation_groups" => "new"]
         );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) 
         {
-            // Version test
-            $user = $UserRepository->findOneById(1);
+            $user = $this->getUser();
+            foreach($trick->getPictures() as $picture)
+            {
+                $picture->setPublisher($user);
+            }
+            foreach($trick->getVideos() as $video)
+            {
+                $video->setPublisher($user);
+            }
             $trick->setUser($user);
             $slugger = new AsciiSlugger();
             $trick->setSlug(strToLower($slugger->slug($trick->getName())));
-
-            //$trick->setUserId($this->getUser());
-            //$slugger = new AsciiSlugger();
-            //$trick->setSlug(strToLower($slugger->slug($trick->getName())));
+            $fileUploader->uploadPicture($trick);
+            $fileUploader->uploadVideo($trick);
 
             $trickRepository->save($trick, true);
-
+            $this->addFlash('success', 'Nouvelle figure ' .$trick->getName(). ' créée !');
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -71,13 +79,14 @@ class TrickController extends AbstractController
         MessageRepository $messageRepository,
         UserRepository $userRepository
     ): Response {
+        // dd($request);
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // user test
-            $user = $userRepository->findOneById(1);
+            $user = $this->getUser();
             $message->setTrick($trick);
             $message->setAuthor($user);
             $messageRepository->save($message, true);
@@ -99,14 +108,40 @@ class TrickController extends AbstractController
         Trick $trick, 
         TrickRepository $trickRepository,
         UserRepository $userRepository,
-        PictureRepository $pictureRepository
+        PictureRepository $pictureRepository,
+        FileUploader $fileUploader
     ): Response
     {
-        $form = $this->createForm(TrickType::class, $trick);
+        // dump($trick->getPictures());
+        foreach($trick->getPictures() as $picture)
+        {
+            $picture->setFile(new File($this->getParameter("picture_directory")."/".$picture->getPath()));
+        }
+        // dd($trick->getPictures());
+        $currentUser = $this->getUser();
+        $this->denyAccessUnlessGranted('edit', $trick, "Vous n'avez pas l'autorisation de modifier cette figure");
+        $form = $this->createForm(
+            TrickType::class, 
+            $trick,
+            ["validation_groups" => "edit"]
+        );
         $form->handleRequest($request);
-        // dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $user = $this->getUser();
+            foreach($trick->getPictures() as $picture)
+            {
+                $picture->setPublisher($user);
+            }
+            foreach($trick->getVideos() as $video)
+            {
+                $video->setPublisher($user);
+            } 
+
             $trick->setUpdateDate(new \DateTimeImmutable());
+
+            $fileUploader->uploadPicture($trick);
+            $fileUploader->uploadVideo($trick);
 
             $trickRepository->save($trick, true);
             $this->addFlash('success', 'Figure bien éditée !');
@@ -121,14 +156,15 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/figure/delete/{id}', name: 'app_trick_delete', methods: ['POST'])]
+    #[Route('/figure/delete/{id}', name: 'app_trick_delete', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function delete(Request $request, Trick $trick, TrickRepository $trickRepository): Response
     {
-        $this->addFlash(
-            'warning',
-            'Are you sure to want delete this trick ?'
-        );
+        $this->denyAccessUnlessGranted('delete', $trick, "Vous n'avez pas l'autorisation de supprimer cette figure");
+        $currentUser = $this->getUser();
+        if ($trick->getUser() !== $currentUser && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
         if ($this->isCsrfTokenValid('delete'.$trick->getId(), $request->request->get('_token'))) {
             $trickRepository->remove($trick, true);
             $this->addFlash(
