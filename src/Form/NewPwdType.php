@@ -21,10 +21,16 @@ class NewPwdType extends AbstractType
                 'required' => true,
                 'invalid_message' => 'Les mots de passe ne sont pas identiques',
                 'first_options' => [
-                    'label' => 'Nouveau mot de passe'
+                    'label' => 'Nouveau mot de passe: ',
+                    'attr'=>[
+                        'class' => 'mb-5 d-flex flex-column'
+                    ]
                 ],
                 'second_options' => [
-                    'label' => 'Répétez le mot de passe'
+                    'label' => 'Répétez le mot de passe: ',
+                    'attr'=>[
+                        'class' => 'mb-5 d-flex flex-column'
+                    ]
                 ],
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez saisir un mot de passe']),

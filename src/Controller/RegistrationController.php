@@ -23,27 +23,33 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, RegistrationMailInterface $registrationMailInterface): Response
     {
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode token
-            $user->setToken(bin2hex($user->getEmail()));
-            // encode the plain password
+        if($form->isSubmitted()){
+            //encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
-            $entityManager->persist($user);
-            $entityManager->flush();
+            if ($form->isValid()) {
+                // encode token
+                $user->setToken(bin2hex($user->getEmail()));
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-            // do anything else you need here, like send an email
-            $registrationMailInterface($user);
+                // do anything else you need here, like send an email
+                $registrationMailInterface($user);
 
-            return $this->redirectToRoute('app_trick_index');
+                $this->addFlash(
+                    'notice',
+                    'Mail for validation is send, check your inbox'
+                );
+                return $this->redirectToRoute('app_trick_index');
+            }
         }
 
         return $this->render('registration/register.html.twig', [

@@ -14,29 +14,15 @@
       </div>
       <div class="gx-4 gx-lg-5 d-flex flex-column justify-content-center align-items-center border border-secondary">
         <div class="form pt-2 pb-2 ">
-          {# <form id="contactForm" action="{{ path('app_forgotpwd') }}" method="post" class="border-0">
-            <div class="container mt-4 mb-4 bigdisappear">
-              <div class="section-header">
-                <h3 class="section-title">Forgot password</h3>
-              </div>
-            </div>
-            <div class="form-floating">
-                <input class="form-control" id="email" type="text" placeholder="Email@email.fr" name="email" required value="{{ last_username }}"/>
-                <label for="email">Email</label>
-                <div class="invalid-feedback" data-sb-feedback="email:required">Email requis</div>
-            </div>
-            <br/>
-            <!-- Submit Button-->
-            <div class="text-center">
-              <button type="submit" class="buttons">
-                Ask for reset password
-              </button>
-            </div>
-          </form> #}
           {{ form_start(form) }}
+          {{ form_widget(form._token)}}
             {{ form_row(form.email)}}
-            {{ form_widget(form.submit)}}
-          {{ form_end(form) }}
+            <div class="text-center">
+                <button type="submit" class="buttons">
+                    Submit
+                </button>
+            </div>  
+          {{ form_end(form, {render_rest: false}) }}
         </div>
       </div>
     </section><!-- End Contact Section -->
@@ -45,7 +31,7 @@
 {% endblock %}
 {% block footer %}
 <!-- ======= Footer ======= -->
-<footer id="footer" class="mt-5">
+<footer id="footer" class="mt-5 fixed-bottom">
   <div class="footer-top">
     <div class="footer-adapt">
         <a href="index.php"><i class="bi bi-house-fill"></i></a>

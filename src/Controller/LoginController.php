@@ -17,20 +17,28 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 
 class LoginController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+            return $this->render('security/login.html.twig', [
+                'last_username' => $authenticationUtils->getLastUsername(), 
+                'error' => $authenticationUtils->getLastAuthenticationError()
+            ]);
+    }
 
-        return $this->render('security/login.html.twig', [
-            'last_username' => $authenticationUtils->getLastUsername(), 
-            'error' => $authenticationUtils->getLastAuthenticationError()
-        ]);
+    #[Route('/loginsuccess', name: 'security_login_valid')] 
+    public function loginsuccess(Request $request, AuthenticationUtils $authenticationUtils): Response
+    {
+            $this->addFlash(
+                'success',
+                'Bienvenue ' . $this->getUser()
+            );
+
+            return $this->redirectToRoute('app_trick_index');
     }
 
     #[Route('/logout', name: 'app_logout')]

@@ -38,10 +38,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotNull]
-    #[SecurityAssert\UserPassword(
-        message: 'Wrong value for your current password',
-    )]
+    // #[Assert\NotNull('Le mot de passe doit être renseigné', groups: ['edit'])]
+    // #[SecurityAssert\UserPassword(
+    //     message: 'Wrong value for your current password',
+    // )]
     private ?string $password = null;
 
     #[ORM\Column]
