@@ -1,0 +1,121 @@
+Symfony is great : J'aime Symfony
+
+# General
+
+Welcome : Bienvenue
+Welcome to Snowtricks : Bienvenue sur Snowtricks
+Let's share our passion for snowboarding together! : Partageons ensemble notre passion du snowboard!
+Load More : ' + de contenu'
+Back to list : Retour à la liste
+Index: Index
+Home : Accueil
+Sign in :  S'identifier
+Sign up: S'inscrire
+
+Id : Identifiant
+Created at : 'Crée le : '
+Registration date : Date d'inscription
+Submit :  Valider
+Save : Sauvegarder
+Password : Mot de passe
+
+Delete : supprimer
+Create : Créer
+Edit : modifier
+Show : Afficher
+Updated : Modifié
+By : Par
+
+Name: Nom
+First name : Prénom
+
+NewF : Nouvelle
+NewM : Nouveau
+T : Figure
+
+# Tricks
+
+Trick :
+  created : Figure créée 
+  deleted : Figure supprimée
+  edited : Figure éditée
+
+# Users
+
+Account: Compte utilisateur
+create_account : Créer un compte
+User :
+  edited : Compte utilisateur édité
+  deleted : Compte utilisateur supprimé
+
+# Login
+
+Log in : Se connecter
+Login : Login
+Email : Email
+Reset password : Réinitialiser mot de passe
+Request email successfully sent : Email de demande bien envoyé
+Please validate your account first : Veuillez d'abord valider votre compte
+Password successfully changed : Mot de passe modifié avec succès
+An error has occurred. Please try again : Une erreur est survenue, veuillez réessayer
+Forgot password : Mot de passe oublié
+You are logged in as : Vous êtes connecté en tant que
+
+# Registration
+
+Registration : Inscription
+Mail for validation is send, check your inbox : Email de validation envoyé, vérifiez votre boîte mail
+
+#Pictures
+
+Add a picture : Ajouter une image
+Picture: 'Image : ' 
+picture_not_null : L'image est obligatoire
+isHeader : Image d'en-tête ?
+min_picture : 'Ajoutez au moins une image'
+
+avatar : 'Avatar :'
+Add one avatar to your profile : Ajoutez un avatar à votre profil
+
+# Videos
+
+Add a video : Ajouter une vidéo
+min_video : 'Ajoutez au moins une video'
+video_url : 'Url de la vidéo :'
+video_not_null : 'La figure doit contenir une vidéo au moins'
+
+# Medias (photos et videos regroupées pour l'affichage)
+
+Add one or more media to your trick : Ajoutez un média ou plus à votre figure
+See medias : Afficher les médias
+
+#Categories
+
+Category : 'Catégorie :'
+Choose_category : 'Choississez une catégorie : '
+
+#Messages
+
+Comment : Commenter
+Message : Message
+
+# Firewall
+
+Access denied, you can't edit this trick : Vous n'avez pas l'autorisation de modifier cette figure
+Access denied, you can't delete this trick : Vous n'avez pas l'autorisation de supprimer cette figure
+
+# Templates et forms
+
+Please leave a comment : Laissez un commentaire
+Passwords are not the same : Les mots de passe ne sont pas identiques
+New password : Nouveau mot de passe
+Repeat password : Répétez le mot de passe
+Please enter a new password : Saisissez un nouveau mot de passe
+Please enter a password : Veuillez saisir le mot de passe
+Description : 'Description :'
+
+#validators
+
+min_message : Veuillez saisir au moins {{ limit }} caractères
+min_password : Your password should be at least {{ limit }} characters
+
