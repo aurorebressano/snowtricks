@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'Log in'|trans }}{% endblock %}
 
 {% block body %}
 <!-- ======= Contact Section ======= -->
@@ -9,7 +9,7 @@
     <section class="contact">
       <div class="container mt-4 mb-4 minidisappear">
         <div class="section-header">
-          <h3 class="section-title">Sign in</h3>
+          <h3 class="section-title">{{ 'Log in'|trans }}</h3>
         </div>
       </div>
       {% if error %}
@@ -18,7 +18,7 @@
 
       {% if app.user %}
         <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            {{ 'You are logged in as'|trans }} {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
       {% endif %}
       <div class="gx-4 gx-lg-5 d-flex flex-column justify-content-center align-items-center border border-secondary">
@@ -26,27 +26,27 @@
             <form id="contactForm" action="" method="post" class="border-0">
                 <div class="container mt-4 mb-4 bigdisappear">
                 <div class="section-header">
-                    <h3 class="section-title">Sign in</h3>
+                    <h3 class="section-title">{{ 'Log in'|trans }}</h3>
                 </div>
                 </div>
                 <div class="form-floating">
-                    <label for="inputEmail" class="mb-2">Email</label>
+                    <label for="inputEmail" class="mb-2">{{ 'Email'|trans }}</label>
                     <input type="text" value="{{ last_username }}" name="_username" id="userName" class="form-control" autocomplete="email" required autofocus>
                 </div>
                 <div class="form-floating">
-                    <label for="inputPassword" class="mb-2">Password</label>
+                    <label for="inputPassword" class="mb-2">{{ 'Password'|trans }}</label>
                     <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
                 </div>
                 <div class="form-floating my-3">
-                    <a href="{{ path('app_forgotpwd') }}">Mot de passe oublié ?</a>
+                    <a href="{{ path('app_forgotpwd') }}">{{ 'Forgot password'|trans }}</a>
                 </div>
                 <br/>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 <!-- Submit Button-->
                 <div class="text-center">
-                <button type="submit" class="buttons">
-                    Connection
-                </button>
+                  <button type="submit" class="buttons">
+                      {{ 'Submit'|trans }}
+                  </button>
                 </div>
             </form>
         </div>

@@ -3,7 +3,7 @@
     <head>  
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{'Welcome'|trans }} !{% endblock %}</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
         <!-- Favicons -->
@@ -42,12 +42,12 @@
                     </div>
                     <nav id="navbar" class="navbar">
                         <ul>
-                        <li><a class="nav-link scrollto active" href="/">Home</a></li>
+                        <li><a class="nav-link scrollto active" href="/">{{'Home'|trans }}</a></li>
                         {% if app.user %}
-                        <li><a class="nav-link scrollto" href="{{ path('app_user_show', {'id': app.user.id }) }}">Account</a></li>
+                        <li><a class="nav-link scrollto" href="{{ path('app_user_show', {'id': app.user.id }) }}"> {{'Account'|trans }}</a></li>
                         {% endif %}
-                        <li><a href="{{ path('app_login') }}" class="nav-link scrollto">Sign in</a></li>
-                        <li><a href="{{ path('app_register') }}" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link">Sign up</a></li>
+                        <li><a href="{{ path('app_login') }}" class="nav-link scrollto">{{'Sign in'|trans }}</a></li>
+                        <li><a href="{{ path('app_register') }}" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link">{{'Sign up'|trans }}</a></li>
                         <li><a class="nav-link scrollto disco" href="{{ path('app_logout') }}" data-toggle="tooltip" data-placement="bottom" title="Log out"><i class="bi bi-power"></i></a></li>
                         </ul>
                         <i class="bi bi-list mobile-nav-toggle"></i>

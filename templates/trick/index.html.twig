@@ -15,8 +15,8 @@
             {{ message }}
         </div>
       {% endfor %}
-      <h1>Bienvenue sur Snowtricks</h1>
-      <h2>Partageons ensemble notre passion du snowboard!</h2>
+      <h1>{{ 'Welcome to Snowtricks'|trans }}</h1>
+      <h2>{{ "Let's share our passion for snowboarding together!"|trans }}</h2>
       <a href="#portfolio" class="top-to-back d-flex align-items-center justify-content-center"><i class="bi bi-arrow-down-short"></i></a>
     </div>
   </section>
@@ -30,7 +30,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="currentColor" class="bi bi-plus-lg img-fluid" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
             </svg>
-            Create new
+            {{ 'Create'|trans }} {{ 'NewF' |trans }} {{'T' |trans }}
           </button>
         </a>
       </div>
@@ -45,7 +45,7 @@
             {% endif %}
             {% set pic = trick.getPictures().first() %}
                 <div class="col-lg-2 portfolio-item filter-card content card">
-                {% if pic is defined and pic is not null and pic is not empty%}
+                {% if pic is defined and pic is not null and pic is not empty %}
                   <img src="{{asset('img/' ~ pic )}}" class="img-fluid" alt="" height="100%">
                 {% else %}
                   <img src="{{asset('img/default.png')}}" class="img-fluid" alt="" style="height:100%;">
@@ -55,11 +55,8 @@
                       <div>
                           <a href="{{ path('app_trick_edit', {'id': trick.id}) }}" class="preview-link" ><i class="bi bi-pencil"></i></a>
                           <div class="details-link" title="Delete">
-                          {# <a href="{{ path('app_trick_delete', {'id': trick.id}) }}">
-                          <button type="submit" class="btn btn-secondary" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}" title="delete"><i class="bi bi-trash"></i></button></a> #}
                             {% include 'trick/_delete_form.html.twig'  with {'id': trick.id, 'csrf_token': 'delete' ~ trick.id} %}
                           </div>
-                          
                       </div>
                   </div>
                 </div>
@@ -75,7 +72,7 @@
     </section><!-- End Portfolio Section -->
     <div class="d-flex flex-lg-row justify-content-center sticky-bottom" style="background: #f7f7f7; display=block">
       <div>
-        <button id = "loadMore" class="buttons mt-4 mb-2" onclick="display()" style="position:relative"><i class="bi bi-arrow-clockwise"></i> Load More </button>
+        <button id = "loadMore" class="buttons mt-4 mb-2" onclick="display()" style="position:relative"><i class="bi bi-arrow-clockwise"></i>{{ 'Load More'|trans }} </button>
       </div>
     </div>
 </main>

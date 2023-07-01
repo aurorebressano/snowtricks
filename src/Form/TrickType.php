@@ -14,15 +14,24 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TrickType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    } 
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
             ->add('description', TextareaType::class, [
-                'label' => 'Description: ',
+                'label' => $this->translator->trans('Description'),
                 'attr'=>[
                     'class'=> 'form-control'
                 ],
@@ -30,38 +39,38 @@ class TrickType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class'=>Category::class,
-                'choice_label'=>'title',
+                'choice_label'=> $this->translator->trans('title'),
                 'multiple'=>false,
                 'required'=>true,
-                'label'=>'Catégorie',
-                'placeholder'=>'Choisissez une catégorie de trick'
+                'label'=> $this->translator->trans('Category'),
+                'placeholder'=> $this->translator->trans('Choose_category')
             ])
             ->add('pictures', CollectionType::class, [
                 'entry_type' => PictureType::class,
                 'attr'=>[
-                    'label'=> 'Picture: ', 
-                    'placeholder'=>'Add one or more media to your trick'
+                    'label'=> $this->translator->trans('Picture'), 
+                    'placeholder'=> $this->translator->trans('Add one or more media to your trick')
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'required'=>true,
                 'constraints' => [
-                    new Count(min:1, minMessage:'Ajoutez au moins une image', groups: ["new", "edit"])
+                    new Count(min:1, minMessage: $this->translator->trans('min_picture'), groups: ["new", "edit"])
                 ]
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => VideoType::class,
                 'attr'=>[
                     'label'=> 'Video: ', 
-                    'placeholder'=>'Add one or more media to your trick'
+                    'placeholder'=> $this->translator->trans('Add one or more media to your trick')
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'required'=>true,
                 'constraints' => [
-                    new Count(min:1, minMessage:'Ajoutez au moins une vidéo', groups: ["new", "edit"])
+                    new Count(min:1, minMessage: $this->translator->trans('min_video'), groups: ["new", "edit"])
                 ]
             ]);
     }

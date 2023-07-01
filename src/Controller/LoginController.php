@@ -17,20 +17,27 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Service\UserManipulation;
 
 class LoginController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+            return $this->render('security/login.html.twig', [
+                'last_username' => $authenticationUtils->getLastUsername(), 
+                'error' => $authenticationUtils->getLastAuthenticationError()
+            ]);
+    }
 
-        return $this->render('security/login.html.twig', [
-            'last_username' => $authenticationUtils->getLastUsername(), 
-            'error' => $authenticationUtils->getLastAuthenticationError()
-        ]);
+    #[Route('/loginsuccess', name: 'security_login_valid')] 
+    public function loginsuccess(Request $request, AuthenticationUtils $authenticationUtils, TranslatorInterface $translator): Response
+    {
+            $this->addFlash('success',  $translator->trans('Welcome') . $this->getUser());
+            return $this->redirectToRoute('app_trick_index');
     }
 
     #[Route('/logout', name: 'app_logout')]
@@ -40,28 +47,21 @@ class LoginController extends AbstractController
     }
 
     #[Route('/forgotpwd', name: 'app_forgotpwd')]
-    public function forgot(Request $request, AuthenticationUtils $authenticationUtils, UserRepository $userRepository, ResetMailInterface $resetMailInterface, EntityManagerInterface $entityManager): Response
+    public function forgot(Request $request, AuthenticationUtils $authenticationUtils, UserRepository $userRepository, ResetMailInterface $resetMailInterface, EntityManagerInterface $entityManager, TranslatorInterface $translator, UserManipulation $userManipulation): Response
     {
-        // Envoi de demande de reset mot de passe
         $form = $this->createForm(ResetPwdFormType::class);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid())
         {
-            $email = $form->getData('email');
-            $user = $userRepository->findOneByEmail($email);
-            if($user && $user->isIsValidated() === true)
+            $isAValidatedUser = $userManipulation->isAValidatedUSer($form);
+            if($isAValidatedUser == true)
             {
-                $user->setToken(bin2hex(random_bytes(32)));
-                $userRepository->save($user, true);
-                $resetMailInterface($user);
-                $this->addFlash('success', 'Email de demande bien envoyé');
-            } 
+                $this->addFlash('success', $translator->trans('Request email successfully sent'));
+            }
             else
             {
-                $this->addFlash('warning', 'Veuillez d\'abord valider votre compte');
+                $this->addFlash('warning', $translator->trans('Please validate your account first'));
             }
-
             return $this->redirectToRoute('app_trick_index');
         }
 
@@ -73,35 +73,23 @@ class LoginController extends AbstractController
     }
 
     #[Route('/newpwd/{token}', name: 'app_newpwd')]
-    public function newpwd(Request $request, UserPasswordHasherInterface $userPasswordHasher, AuthenticationUtils $authenticationUtils, UserRepository $userRepository, $token): Response
+    public function newpwd(Request $request, UserPasswordHasherInterface $userPasswordHasher, AuthenticationUtils $authenticationUtils, UserRepository $userRepository, TranslatorInterface $translator, UserManipulation $userManipulation, $token): Response
     {
-        $user = $userRepository->findOneByToken($token);
         $form = $this->createForm(NewPwdType::class);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
-            if($user && $user->getToken() == $request->attributes->get('token'))
+            $user = $userRepository->findOneByToken($token);
+            $goodToken = $userManipulation->newPasswordAttribution($token, $request, $form);
+            if($goodToken == true)
             {
-                // delete token
-                $user->setToken(null);
-                $user->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $user,
-                        $form->get('password')->getData()
-                    )
-                );
-
-                $userRepository->save($user, true);
-                $this->addFlash('success', 'Mot de passe bien modifié');
-
+                $this->addFlash('success', $translator->trans('Password successfully changed'));
                 return $this->redirectToRoute('app_login',  [], Response::HTTP_SEE_OTHER);
             }
             else
             {
-                $this->addFlash('warning', 'Une erreur est survenue, veuillez réessayer');
-                $user->setToken(null);
-                $userRepository->save($user, true);
+                $this->addFlash('warning', $translator->trans('An error has occurred. Please try again'));
                 return $this->redirectToRoute('app_forgotpwd',  [], Response::HTTP_SEE_OTHER);
             }
         }
