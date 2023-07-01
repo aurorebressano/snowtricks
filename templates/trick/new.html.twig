@@ -32,13 +32,13 @@
     <div class="container mt-4 mb-4 col-lg-12">
       <div class="row portfolio-container">
         <div class="detailsToShow col-lg-4 portfolio-item filter-card card">
-          <p class="img-fluid">Ajouter un ou plusieurs médias à votre figure.</p>
+          <p class="img-fluid">{{ 'Add one or more media to your trick'|trans }}</p>
         </div>
         <div class="detailsToShow col-lg-4 portfolio-item filter-card card">
           <div class="centered addMedia" style="height:100%">
             <a class="preview-link centered">
               <div id="trick_pictures" data-prototype="{{ include('trick/_picture.html.twig', {form: form.pictures.vars.prototype})|e("html_attr") }}" data-index="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}">
-                <button type="button" data-collection="#trick_pictures" class="btn-new">Ajouter une image</button>
+                <button type="button" data-collection="#trick_pictures" class="buttons btn-new">+ {{ 'Add a picture'|trans }}</button>
               </div>
             </a>
           </div>
@@ -47,7 +47,7 @@
           <div class="centered addMedia" style="height:100%">
             <a class="preview-link centered">
               <div id="trick_videos" data-prototype="{{ include('trick/_video.html.twig', {form: form.videos.vars.prototype})|e("html_attr") }}" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}">
-                <button type="button" data-collection="#trick_videos" class="btn-new">Ajouter une vidéo</button>
+                <button type="button" data-collection="#trick_videos" class="buttons btn-new">+ {{ 'Add a video'|trans }}</button>
               </div>
             </a>
           </div>
@@ -61,9 +61,9 @@
 <section class="about miniReduce miniBody mt-5">
   <div class="d-flex bigRowMiniCol justify-content-center miniModalCrunch miniBody">
       <p><span class="badge bg-secondary mx-2 miniCrush">{{ form_widget(form.category) }}</span></p>
-      <p><span class="badge bg-menthe mx-2 miniCrush">Crée: {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
-      <p><span class="badge bg-secondary mx-2 miniCrush">Modif: {{ trick.updateDate ? trick.updateDate|date('Y-m-d H:i:s') : 'non modifié' }}</span></p>
-      <p><span class="badge bg-menthe mx-2 miniCrush">By {{ trick.user }}</span></p>
+      <p><span class="badge bg-menthe mx-2 miniCrush">{{ 'Created at'|trans }} : {{ trick.creationDate|date('Y-m-d H:i:s') }}</span></p>
+      <p><span class="badge bg-secondary mx-2 miniCrush">{{ 'Updated'|trans }} : {{ trick.updateDate ? trick.updateDate|date('Y-m-d H:i:s') : 'non modifié' }}</span></p>
+      <p><span class="badge bg-menthe mx-2 miniCrush">{{ 'By'|trans }} : {{ trick.user }}</span></p>
   </div>
 </section>
 <section class="comment justify-content-center miniModalForm mr-5">

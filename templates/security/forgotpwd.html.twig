@@ -9,7 +9,7 @@
     <section class="contact">
       <div class="container mt-4 mb-4 minidisappear">
         <div class="section-header">
-          <h3 class="section-title">Forgot password</h3>
+          <h3 class="section-title">{{ 'Forgot password'|trans }}</h3>
         </div>
       </div>
       <div class="gx-4 gx-lg-5 d-flex flex-column justify-content-center align-items-center border border-secondary">
@@ -19,7 +19,7 @@
             {{ form_row(form.email)}}
             <div class="text-center">
                 <button type="submit" class="buttons">
-                    Submit
+                    {{ 'Submit'|trans }}
                 </button>
             </div>  
           {{ form_end(form, {render_rest: false}) }}

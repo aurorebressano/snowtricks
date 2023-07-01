@@ -19,7 +19,6 @@ class RegistrationMail implements RegistrationMailInterface
     public function __invoke(User $user): void
     {
         // Create a Transport object
-        // dd('test');
         $emailSender = strip_tags('aurorebressano@gmail.com');
         $message = "<p>Cliquez sur ce lien pour confirmer votre email: <a href='https://127.0.0.1:8000/registervalidation/" .$user->getToken() . "'>Confirmer !</a></p>";
         $transport = Transport::fromDsn('smtp://6c8124977333a7:1d79ef799b3ca7@sandbox.smtp.mailtrap.io:2525?encryption=tls&auth_mode=login');
@@ -52,4 +51,6 @@ class RegistrationMail implements RegistrationMailInterface
             dd("Echec d'envoi du message");
         }
     }
+
+    
 }

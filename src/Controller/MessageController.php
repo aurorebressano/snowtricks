@@ -30,7 +30,6 @@ class MessageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $messageRepository->save($message, true);
-
             return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -56,7 +55,6 @@ class MessageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $messageRepository->save($message, true);
-
             return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -72,7 +70,6 @@ class MessageController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$message->getId(), $request->request->get('_token'))) {
             $messageRepository->remove($message, true);
         }
-
         return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
     }
 }

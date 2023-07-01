@@ -8,24 +8,28 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email')
-            // ->add('roles')
-            // ->add('password', PasswordType::class)
-            // ->add('isValidated')
             ->add('name')
             ->add('firstname')
-            // ->add('registrationDate')
-            // ->add('token')
             ->add('file', FileType::class, [
                 'attr'=>[
-                    'label'=> 'Avatar: ', 
-                    'placeholder'=>'Add one avatar to your profile'
+                    'label'=> $this->translator->trans('Avatar'), 
+                    'placeholder'=> $this->translator->trans('Add one avatar to your profile')
                 ],
                 'required'=>false,
             ])

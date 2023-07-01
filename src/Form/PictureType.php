@@ -9,9 +9,18 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PictureType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    } 
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -20,7 +29,7 @@ class PictureType extends AbstractType
                 "label" => false,
                 'error_bubbling' => true,
                 "constraints" => [
-                    new NotNull(message: "L'image ne doit pas être vide" ,
+                    new NotNull(message:  $this->translator->trans('picture_not_null') ,
                     groups: [
                         "new"
                     ])
@@ -31,7 +40,7 @@ class PictureType extends AbstractType
             ])
             ->add('header', CheckboxType::class, [
                 "required"=>false,
-                "label" => "Image d'en-tête?",
+                "label" => $this->translator->trans('isHeader'),
                 "attr"=> [
                     "class" => "RadioType"
                 ]

@@ -26,3 +26,5 @@ services:
     App\Service\FileUploader:
         arguments: 
             $targetDirectory: '%picture_directory%'
+
+    Symfony\Contracts\Translation\TranslatorInterface: '@translator'

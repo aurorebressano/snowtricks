@@ -1,22 +1,6 @@
-{# {% extends 'base.html.twig' %}
-
-{% block title %}Edit User{% endblock %}
-
-{% block body %}
-    <h1>Edit User</h1>
-
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-    {# <a href="{{ path('app_user_index') }}">back to list</a> #}
-
-    {# {{ include('user/_delete_form.html.twig') }}
-{% endblock %} #}
-
-{# /////////////// #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Account{% endblock %}
+{% block title %}{{ 'Edit'|trans }} {{ 'Account'|trans }}{% endblock %}
 
 {% block body %}
 <!-- ======= About Section ======= -->
@@ -28,19 +12,19 @@
                 <div class="col-lg-6 content order-lg-1 order-2">
                     <div class="icon-box">
                     <div class="icon"><i class="bi bi-briefcase"></i></div>
-                    <h4 class="title"><a href="">Email</a></h4>
+                    <h4 class="title"><a href="">{{ 'Email'|trans }}</a></h4>
                     <p class="description">{{ form_widget(form.email) }}</p>
                     </div>
 
                     <div class="icon-box">
                     <div class="icon"><i class="bi bi-card-checklist"></i></div>
-                    <h4 class="title"><a href="">Name:</a></h4>
+                    <h4 class="title"><a href="">{{ 'Name'|trans }} :</a></h4>
                     <p class="description">{{ form_widget(form.name) }}</p>
                     </div>
 
                     <div class="icon-box">
                     <div class="icon"><i class="bi bi-binoculars"></i></div>
-                    <h4 class="title"><a href="">First name:</a></h4>
+                    <h4 class="title"><a href="">{{ 'First name'|trans }} :</a></h4>
                     <p class="description">{{ form_widget(form.firstname) }}</p>
                     </div>
                 </div>
@@ -61,26 +45,20 @@
                     </div>
                     <div class="icon-box">
                     <div class="icon"><i class="bi bi-card-checklist"></i></div>
-                    <h4 class="title"><a href="">Registration date:</a></h4>
+                    <h4 class="title"><a href="">{{'Registration date'|trans }} :</a></h4>
                     {% set registrationDate = user.registrationDate %}
                     <p class="description">{{ registrationDate ? registrationDate|date('Y-m-d H:i:s') : '' }}</p>
                     </div>
                     <div class="icon-box">
-                    {# <div class="icon"><i class="bi bi-binoculars"></i></div> #}
-                    {# <h4 class="title"><a href="">Password :</a></h4> #}
-                    {# <p class="description">{{form_widget(form.password)}}</p> #}
-                    {# <p class="description">{{ user.password }}</p> #}
                     </div>
                 </div>
-                {# <div class="col-lg-6 background order-lg-2 order-1">
-                </div> #}
             </div>
         </div>
     </section><!-- End About Section -->
 
     <div class="modal-footer border-0 miniModalFooter mb-5 mx-5">
         {{ include('user/_delete_form.html.twig') }}
-        <button type="submit" class="btn bg-menthe mx-3" style="color:white">{{ button_label|default('Update') }}</button>
+        <button type="submit" class="btn bg-menthe mx-3" style="color:white">{{ button_label|default('Save'|trans) }}</button>
     </div>
     {{ form_end(form) }}
 {% endblock %}

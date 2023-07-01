@@ -8,16 +8,25 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VideoType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+    
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('path', TextType::class, [
-                "label" => 'Url de la vidéo: ',
+                "label" => $this->translator->trans('video_url'),
                 "constraints" => [
-                    new NotNull(message: "L'image ne doit pas être vide" ,
+                    new NotNull(message: $this->translator->trans('video_not_null') ,
                     groups: [
                         "new"
                     ])
